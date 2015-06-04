@@ -17,9 +17,21 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
+# Use debconf.
+. /usr/share/debconf/confmodule
+
+db_fset cozy/domain_name changed "localhost"
+# db_input high cozy/dh_size
+# db_input high cozy/domain_name
+# db_go
 
 case "$1" in
     configure)
+	# Check their answer.
+	# db_get cozy/dh_size
+	# echo $RET
+	db_get cozy/domain_name
+	echo $RET
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
