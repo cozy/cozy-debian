@@ -46,7 +46,7 @@ case "$1" in
         if [ ! -f /etc/cozy/couchdb.login ]; then
                 pwgen -1 > /etc/cozy/couchdb.login && \
                 pwgen -1 >> /etc/cozy/couchdb.login
-                while ! curl -s 127.0.0.1:5984; do echo "Wait CouchDB"; sleep 5; done
+                while ! curl -s 127.0.0.1:5984 >/dev/null; do echo "Wait CouchDB"; sleep 5; done
                 curl -s -X PUT 127.0.0.1:5984/_config/admins/$(head -n1 /etc/cozy/couchdb.login) -d "\"$(tail -n1 /etc/cozy/couchdb.login)\""
         fi
         chown cozy-data-system /etc/cozy/couchdb.login
@@ -88,7 +88,7 @@ priority=11
 EOF
                 supervisorctl reload
         fi
-        while ! curl -s 127.0.0.1:9102; do echo "Wait controller"; sleep 5; done
+        while ! curl -s 127.0.0.1:9102 >/dev/null; do echo "Wait controller"; sleep 5; done
         if [ ! -d /usr/local/cozy/apps/data-system ]; then
                 cozy-monitor install-cozy-stack
         fi
