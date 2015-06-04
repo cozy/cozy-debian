@@ -30,9 +30,9 @@ case "$1" in
         echo 'pip installation'
         pip freeze | grep -q virtualenv || pip install virtualenv
 	echo 'nmp installation'
-        npm list -g coffee-script | grep -q coffee-script || npm install -g coffee-script
-        npm list -g cozy-controller | grep -q coffee-script || npm install -g cozy-controller
-        npm list -g cozy-monitor | grep -q coffee-script || npm install -g cozy-monitor
+        [ ! -d /usr/local/lib/node_modules/coffee-script ] && npm install -g coffee-script
+        [ ! -d /usr/local/lib/node_modules/cozy-controller ] && npm install -g cozy-controller
+        [ ! -d /usr/local/lib/node_modules/cozy-monitor ] && npm install -g cozy-monitor
 	echo 'users creation.'
         id cozy >/dev/null 2>&1 || useradd -M cozy
         id cozy-data-system >/dev/null 2>&1 || useradd -M cozy-data-system
