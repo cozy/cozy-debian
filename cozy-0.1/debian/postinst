@@ -1,9 +1,7 @@
-#!/bin/sh
+#!/bin/sh -e
 # postinst script for cozy
 #
 # see: dh_installdeb(1)
-
-set -e
 
 # summary of how this script can be called:
 #        * <postinst> `configure' <most-recently-configured-version>
@@ -20,18 +18,16 @@ set -e
 # Use debconf.
 . /usr/share/debconf/confmodule
 
-# db_fset cozy/domain_name changed "localhost"
-# db_input high cozy/dh_size
-# db_input high cozy/domain_name
-# db_go
-
 case "$1" in
     configure)
 	# Check their answer.
-	# db_get cozy/dh_size
-	# echo $RET
-	# db_get cozy/domain_name
-	# echo $RET
+	db_input medium cozy/domain_name
+	db_input medium cozy/dh_size
+	db_go
+
+	db_get cozy/domain_name ; COZY_DOMAIN=$RET
+	db_get cozy/dh_size ; DH_SIZE=$RET
+
         pip freeze | grep -q virtualenv || pip install virtualenv
         npm list -g coffee-script >/dev/null || npm install -g coffee-script
         npm list -g cozy-controller >/dev/null || npm install -g cozy-controller
@@ -99,7 +95,7 @@ EOF
                 cozy-monitor install proxy
         fi
         if [ ! -f /etc/cozy/dh.pem ]; then
-                openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 1024
+                openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 $DH_SIZE
                 chmod 400 /etc/cozy/dh.pem
         fi
         if [ ! -f /etc/cozy/server.key ]; then
@@ -114,6 +110,8 @@ EOF
                 cat > /etc/nginx/sites-available/cozy <<'EOF'
 server {
     listen 443;
+
+    server_name $COZY_DOMAIN;
 
     ssl_certificate /etc/cozy/server.crt;
     ssl_certificate_key /etc/cozy/server.key;
@@ -146,16 +144,13 @@ server {
 # Always redirect http:// to https://
 server {
     listen 80;
+    server_name $COZY_DOMAIN;
     return 301 https://$host$request_uri;
 }
 EOF
                 ln -s /etc/nginx/sites-available/cozy /etc/nginx/sites-enabled/cozy
                 service nginx reload
         fi
-
-        # Check their answer.
-        # db_get cozy/dh_size
-        # echo $RET
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

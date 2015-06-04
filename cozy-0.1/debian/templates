@@ -1,15 +1,4 @@
 
-Template: foo/like_debian
-Type: boolean
-Description: Do you like Debian?
- We'd like to know if you like the Debian GNU/Linux system.
-
-Template: foo/why_debian_is_great
-Type: note
-Description: Poor misguided one. Why are you installing this package?
- Debian is great. As you continue using Debian, we hope you will
- discover the error in your ways.
-
 Template: cozy/dh_size
 Type: select
 Choices: 1024, 2048, 4096
