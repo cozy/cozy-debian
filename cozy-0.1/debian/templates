@@ -4,9 +4,10 @@ Type: select
 Choices: 1024, 2048, 4096
 Default: 2048
 Description: DH size ?
- Blabla
+ The DH size is very important. Too small size is a risk for your privacy. Too
+ big is very long to generate.
 
 Template: cozy/domain_name
 Type: string
 Description: Cozy domain name
- Blabla
+ Your cozy fqdn (fully qualified named).
