@@ -22,11 +22,10 @@ case "$1" in
     configure)
 	# Check their answer.
 	db_input medium cozy/domain_name
-	db_input medium cozy/dh_size
 	db_go
 
-	db_get cozy/domain_name ; COZY_DOMAIN=$RET
-	db_get cozy/dh_size ; DH_SIZE=$RET
+	db_get cozy/domain_name
+	COZY_DOMAIN=$RET
 
         echo 'pip installation'
         pip freeze | grep -q virtualenv || pip install virtualenv
@@ -106,11 +105,10 @@ EOF
         fi
 	echo 'generate ssl stuff'
         if [ ! -f /etc/cozy/dh.pem ]; then
-                openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 $DH_SIZE
+                openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 2048
                 chmod 400 /etc/cozy/dh.pem
         fi
         if [ ! -f /etc/cozy/server.key ]; then
-                DOMAIN=localhost
                 openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/cozy/server.key -out /etc/cozy/server.crt -days 3650 -subj "/CN=$COZY_DOMAIN"
                 chmod 400 /etc/cozy/server.key
         fi
