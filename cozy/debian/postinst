@@ -108,8 +108,8 @@ EOF
         if [ -f /etc/nginx/sites-enabled/default ]; then
                 rm /etc/nginx/sites-enabled/default
         fi
-        if [ ! -f /etc/nginx/sites-enabled/cozy ]; then
-                cat > /etc/nginx/sites-available/cozy <<EOF
+        if [ ! -f /etc/nginx/conf.d/cozy ]; then
+                cat > /etc/nginx/conf.d/cozy <<EOF
 server {
     listen 443;
 
@@ -150,7 +150,6 @@ server {
     return 301 https://\$host\$request_uri;
 }
 EOF
-                ln -s /etc/nginx/sites-available/cozy /etc/nginx/sites-enabled/cozy
                 service nginx reload
         fi
     ;;

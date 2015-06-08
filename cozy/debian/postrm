@@ -32,7 +32,7 @@ case "$1" in
 	    rm -rf /usr/local/cozy
 	    rm /etc/supervisor/conf.d/cozy-indexer.conf /etc/supervisor/conf.d/cozy-controller.conf
 	    supervisorctl reload
-	    rm /etc/nginx/sites-available/cozy /etc/nginx/sites-enabled/cozy
+	    rm /etc/nginx/conf.d/cozy
 	    service nginx reload
     ;;
 
