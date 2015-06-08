@@ -21,19 +21,18 @@
 case "$1" in
     configure)
 	# Check their answer.
-	db_input medium cozy/domain_name
-	db_go
+	db_input high cozy/fqdn || true
+	db_go || true
 
-	db_get cozy/domain_name
+	db_get cozy/fqdn || true
 	COZY_DOMAIN=$RET
 
-        echo 'pip installation'
-        pip freeze | grep -q virtualenv || pip install virtualenv
-	echo 'nmp installation'
-        [ ! -d /usr/local/lib/node_modules/coffee-script ] && npm install -g coffee-script
+	echo "Configure cozy with: $COZY_DOMAIN"
+
+	echo 'Npm installation'
         [ ! -d /usr/local/lib/node_modules/cozy-controller ] && npm install -g cozy-controller
         [ ! -d /usr/local/lib/node_modules/cozy-monitor ] && npm install -g cozy-monitor
-	echo 'users creation.'
+	echo 'Users creation.'
         id cozy >/dev/null 2>&1 || useradd -M cozy
         id cozy-data-system >/dev/null 2>&1 || useradd -M cozy-data-system
         id cozy-home >/dev/null 2>&1 || useradd -M cozy-home
@@ -52,32 +51,24 @@ case "$1" in
         chown cozy-data-system /etc/cozy/couchdb.login
         chmod 640 /etc/cozy/couchdb.login
 	echo 'Cozy indexer.'
-        if [ ! -d /usr/local/cozy-indexer ]; then
-                mkdir -p /usr/local/cozy-indexer && \
-                cd /usr/local/cozy-indexer && \
-                git clone https://github.com/cozy/cozy-data-indexer.git && \
-                cd /usr/local/cozy-indexer/cozy-data-indexer && \
-                virtualenv --quiet /usr/local/cozy-indexer/cozy-data-indexer/virtualenv && \
-                /usr/local/cozy-indexer/cozy-data-indexer/virtualenv/bin/pip install -r /usr/local/cozy-indexer/cozy-data-indexer/requirements/common.txt && \
-                chown -R cozy:cozy /usr/local/cozy-indexer
+        if [ ! -d /var/lib/cozy-indexer ]; then
+                mkdir -p /var/lib/cozy-indexer && \
+                chown -R cozy:cozy /var/lib/cozy-indexer
         fi
         if [ ! -f /etc/supervisor/conf.d/cozy-indexer.conf ]; then
                 cat > /etc/supervisor/conf.d/cozy-indexer.conf <<'EOF'
 [program:cozy-indexer]
 autorestart=true
-command=/usr/local/cozy-indexer/cozy-data-indexer/virtualenv/bin/python server.py
-directory=/usr/local/cozy-indexer/cozy-data-indexer
+command=cozy-indexer
+directory=/var/lib/cozy-indexer
 redirect_stderr=true
 user=cozy
 priority=9
 EOF
                 supervisorctl reload
         fi
-	echo 'node link.'
-        if [ ! -f /usr/bin/node ]; then
-                ln -s /usr/bin/nodejs /usr/bin/node
-        fi
-	echo 'cozy-controller supervisor configuration'
+	while ! curl -s 127.0.0.1:9102/ >/dev/null; do echo "Wait Cozy Indexer"; sleep 5; done
+	echo 'Cozy-controller supervisor configuration'
         if [ ! -f /etc/supervisor/conf.d/cozy-controller.conf ]; then
                 cat > /etc/supervisor/conf.d/cozy-controller.conf <<'EOF'
 [program:cozy-controller]
@@ -91,9 +82,9 @@ priority=11
 EOF
                 supervisorctl reload
         fi
-	echo 'wait controller startup'
+	echo 'Wait controller startup'
         while ! curl -s 127.0.0.1:9102 >/dev/null; do echo "Wait controller"; sleep 5; done
-	echo 'install cozy stack'
+	echo 'Install cozy stack'
         if [ ! -d /usr/local/cozy/apps/data-system ]; then
                 cozy-monitor install-cozy-stack
         fi
@@ -103,21 +94,22 @@ EOF
         if [ ! -d /usr/local/cozy/apps/proxy ]; then
                 cozy-monitor install proxy
         fi
-	echo 'generate ssl stuff'
+	echo 'Generate ssl stuff'
         if [ ! -f /etc/cozy/dh.pem ]; then
-                openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 2048
+                # openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 2048
+                openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 1024
                 chmod 400 /etc/cozy/dh.pem
         fi
         if [ ! -f /etc/cozy/server.key ]; then
                 openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/cozy/server.key -out /etc/cozy/server.crt -days 3650 -subj "/CN=$COZY_DOMAIN"
                 chmod 400 /etc/cozy/server.key
         fi
-	echo 'generate nginx configuration'
+	echo 'Generate nginx configuration'
         if [ -f /etc/nginx/sites-enabled/default ]; then
                 rm /etc/nginx/sites-enabled/default
         fi
         if [ ! -f /etc/nginx/sites-enabled/cozy ]; then
-                cat > /etc/nginx/sites-available/cozy <<'EOF'
+                cat > /etc/nginx/sites-available/cozy <<EOF
 server {
     listen 443;
 
@@ -139,12 +131,12 @@ server {
     add_header Strict-Transport-Security max-age=2678400;
 
     location / {
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header Host \$http_host;
         proxy_redirect http:// https://;
         proxy_pass http://127.0.0.1:9104;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "upgrade";
     }
 
@@ -155,7 +147,7 @@ server {
 server {
     listen 80;
     server_name $COZY_DOMAIN;
-    return 301 https://$host$request_uri;
+    return 301 https://\$host\$request_uri;
 }
 EOF
                 ln -s /etc/nginx/sites-available/cozy /etc/nginx/sites-enabled/cozy

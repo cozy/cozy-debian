@@ -1,5 +1,5 @@
 
-Template: cozy/domain_name
+Template: cozy/fqdn
 Type: string
 Description: Cozy domain name
  Your cozy fqdn (fully qualified named).

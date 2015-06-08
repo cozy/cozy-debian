@@ -1,5 +1,5 @@
 Source: cozy
-Section: unknown
+Section: cozy
 Priority: optional
 Maintainer: Nicolas Ledez <nicolas@cozycloud.cc>
 Build-Depends: debhelper (>= 9)
@@ -8,10 +8,11 @@ Homepage: https://cozy.io/
 
 Package: cozy
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
+Depends: ${misc:Depends},
 	build-essential, curl, git, git-core, imagemagick, libssl-dev,
 	libxml2-dev, libxslt1-dev, python-dev, python-pip, python-setuptools,
-	python-software-properties, software-properties-common, sqlite3, sudo,
-	nginx, postfix, pwgen, nodejs, npm, couchdb, supervisor
+	python-virtualenv, python-software-properties, software-properties-common,
+	sqlite3, sudo, nginx, postfix, pwgen, nodejs, nodejs-legacy, npm,
+	coffeescript, couchdb, supervisor, cozy-indexer
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>

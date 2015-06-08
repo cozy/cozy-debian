@@ -20,7 +20,23 @@ set -e
 
 
 case "$1" in
-    purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+    purge|abort-install)
+	    rm -rf /etc/cozy
+    ;;
+
+    remove|purge|abort-install)
+	    # npm uninstall -g cozy-controller cozy-monitor
+	    for user in cozy cozy-data-system cozy-home; do
+		    userdel $user
+	    done
+	    rm -rf /usr/local/cozy
+	    rm /etc/supervisor/conf.d/cozy-indexer.conf /etc/supervisor/conf.d/cozy-controller.conf
+	    supervisorctl reload
+	    rm /etc/nginx/sites-available/cozy /etc/nginx/sites-enabled/cozy
+	    service nginx reload
+    ;;
+
+    upgrade|failed-upgrade|abort-upgrade|disappear)
     ;;
 
     *)
