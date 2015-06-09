@@ -8,7 +8,7 @@ Homepage: https://cozy.io/
 
 Package: cozy
 Architecture: any
-Required: ${misc:Depends},
+Depends: ${misc:Depends},
 	build-essential, curl, git, git-core, imagemagick, libssl-dev,
 	ca-certificates, libxml2-dev, libxslt1-dev, python-dev, python-pip,
 	python-setuptools, python-virtualenv, python-software-properties,

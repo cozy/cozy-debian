@@ -96,8 +96,7 @@ EOF
         fi
 	echo 'Generate ssl stuff'
         if [ ! -f /etc/cozy/dh.pem ]; then
-                # openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 2048
-                openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 1024
+                openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 2048
                 chmod 400 /etc/cozy/dh.pem
         fi
         if [ ! -f /etc/cozy/server.key ]; then
