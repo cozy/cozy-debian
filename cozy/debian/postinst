@@ -107,8 +107,8 @@ EOF
         if [ -f /etc/nginx/sites-enabled/default ]; then
                 rm /etc/nginx/sites-enabled/default
         fi
-        if [ ! -f /etc/nginx/conf.d/cozy ]; then
-                cat > /etc/nginx/conf.d/cozy <<EOF
+        if [ ! -f /etc/nginx/conf.d/cozy.conf ]; then
+                cat > /etc/nginx/conf.d/cozy.conf <<EOF
 server {
     listen 443;
 
