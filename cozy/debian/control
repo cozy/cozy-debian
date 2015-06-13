@@ -7,7 +7,7 @@ Standards-Version: 3.9.5
 Homepage: https://cozy.io/
 
 Package: cozy
-Architecture: any
+Architecture: all
 Depends: ${misc:Depends},
 	build-essential, curl, git, git-core, imagemagick, libssl-dev,
 	ca-certificates, libxml2-dev, libxslt1-dev, python-dev, python-pip,
