@@ -27,30 +27,30 @@ case "$1" in
 	db_get cozy/fqdn || true
 	COZY_DOMAIN=$RET
 
-	echo "Configure cozy with: $COZY_DOMAIN"
+	echo "Chosen domain name for Cozy: $COZY_DOMAIN"
 
-	echo 'Npm installation'
+	echo 'Installing NPM dependencies...'
         [ ! -d /usr/local/lib/node_modules/cozy-controller ] && npm install -g cozy-controller
         [ ! -d /usr/local/lib/node_modules/cozy-monitor ] && npm install -g cozy-monitor
-	echo 'Users creation.'
+
+	echo 'Creating UNIX users...'
         id cozy >/dev/null 2>&1 || useradd -M cozy
         id cozy-data-system >/dev/null 2>&1 || useradd -M cozy-data-system
         id cozy-home >/dev/null 2>&1 || useradd -M cozy-home
-	echo 'Directories management'
-        if [ ! -d /etc/cozy ]; then
-                mkdir /etc/cozy
-        fi
+
+	echo 'Generating CouchDB tokens...'
+        [ ! -d /etc/cozy ] && mkdir /etc/cozy
         chown -hR cozy /etc/cozy
-	echo 'CouchDB access'
         if [ ! -f /etc/cozy/couchdb.login ]; then
                 pwgen -1 > /etc/cozy/couchdb.login && \
                 pwgen -1 >> /etc/cozy/couchdb.login
-                while ! curl -s 127.0.0.1:5984 >/dev/null; do echo "Wait CouchDB"; sleep 5; done
+                while ! curl -s 127.0.0.1:5984 >/dev/null; do echo "Waiting for CouchDB to start..."; sleep 5; done
                 curl -s -X PUT 127.0.0.1:5984/_config/admins/$(head -n1 /etc/cozy/couchdb.login) -d "\"$(tail -n1 /etc/cozy/couchdb.login)\""
         fi
         chown cozy-data-system /etc/cozy/couchdb.login
         chmod 640 /etc/cozy/couchdb.login
-	echo 'Cozy indexer.'
+
+	echo 'Configuring Cozy Indexer...'
         if [ ! -d /var/lib/cozy-indexer ]; then
                 mkdir -p /var/lib/cozy-indexer && \
                 chown -R cozy:cozy /var/lib/cozy-indexer
@@ -67,8 +67,9 @@ priority=9
 EOF
                 supervisorctl reload
         fi
-	while ! curl -s 127.0.0.1:9102/ >/dev/null; do echo "Wait Cozy Indexer"; sleep 5; done
-	echo 'Cozy-controller supervisor configuration'
+	while ! curl -s 127.0.0.1:9102/ >/dev/null; do echo "Waiting for Cozy Indexer to start..."; sleep 5; done
+
+	echo 'Configuring Cozy Controller...'
         if [ ! -f /etc/supervisor/conf.d/cozy-controller.conf ]; then
                 cat > /etc/supervisor/conf.d/cozy-controller.conf <<'EOF'
 [program:cozy-controller]
@@ -82,9 +83,9 @@ priority=11
 EOF
                 supervisorctl reload
         fi
-	echo 'Wait controller startup'
-        while ! curl -s 127.0.0.1:9102 >/dev/null; do echo "Wait controller"; sleep 5; done
-	echo 'Install cozy stack'
+        while ! curl -s 127.0.0.1:9102 >/dev/null; do echo "Waiting for Cozy Controller to start..."; sleep 5; done
+
+	echo 'Installing Cozy Platform apps...'
         if [ ! -d /usr/local/cozy/apps/data-system ]; then
                 cozy-monitor install-cozy-stack
         fi
@@ -94,7 +95,8 @@ EOF
         if [ ! -d /usr/local/cozy/apps/proxy ]; then
                 cozy-monitor install proxy
         fi
-	echo 'Generate ssl stuff'
+
+	echo 'Generating SSL keys and certificates...'
         if [ ! -f /etc/cozy/dh.pem ]; then
                 openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 2048
                 chmod 400 /etc/cozy/dh.pem
@@ -103,7 +105,8 @@ EOF
                 openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/cozy/server.key -out /etc/cozy/server.crt -days 3650 -subj "/CN=$COZY_DOMAIN"
                 chmod 400 /etc/cozy/server.key
         fi
-	echo 'Generate nginx configuration'
+
+	echo 'Configuring Nginx...'
         if [ -f /etc/nginx/sites-enabled/default ]; then
                 rm /etc/nginx/sites-enabled/default
         fi
@@ -151,6 +154,7 @@ server {
 EOF
                 service nginx reload
         fi
+        nginx -t && echo "Cozy installation done!"
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

@@ -1,5 +1,8 @@
 
 Template: cozy/fqdn
 Type: string
-Description: Cozy domain name
- Your cozy fqdn (fully qualified named).
+Description: Domain name of your Cozy
+ Choose you Cozy's FQDN (fully-qualified domain name).
+ A self-signed certificate will be issued for this domain only, and the Nginx web server will configured with this domain name.
+
+ i.e.: cozy.example.com
