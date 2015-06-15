@@ -107,11 +107,12 @@ EOF
         fi
 
 	echo 'Configuring Nginx...'
-        if [ -f /etc/nginx/sites-enabled/default ]; then
-                rm /etc/nginx/sites-enabled/default
-        fi
-        if [ ! -f /etc/nginx/conf.d/cozy.conf ]; then
-                cat > /etc/nginx/conf.d/cozy.conf <<EOF
+        if [ -d /etc/nginx ]; then
+		if [ -f /etc/nginx/sites-enabled/default ]; then
+			rm /etc/nginx/sites-enabled/default
+		fi
+		if [ ! -f /etc/nginx/conf.d/cozy.conf ]; then
+			cat > /etc/nginx/conf.d/cozy.conf <<EOF
 server {
     listen 443;
 
@@ -152,9 +153,10 @@ server {
     return 301 https://\$host\$request_uri;
 }
 EOF
-                service nginx reload
+			service nginx reload
+		fi
+		nginx -t && echo "Cozy installation done!"
         fi
-        nginx -t && echo "Cozy installation done!"
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
