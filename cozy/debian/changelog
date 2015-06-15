@@ -1,3 +1,15 @@
+cozy (1.2) unstable; urgency=medium
+
+  *  [fix] English wording
+
+ -- Nicolas Ledez <nicolas@cozycloud.cc>  Mon, 15 Jun 2015 09:09:06 +0000
+
+cozy (1.1) unstable; urgency=medium
+
+  * Put package in Architecture: all
+
+ -- Nicolas Ledez <nicolas@cozycloud.cc>  Sat, 13 Jun 2015 08:07:08 +0000
+
 cozy (1.0) unstable; urgency=medium
 
   * Ready for production
