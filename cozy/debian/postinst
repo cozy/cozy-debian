@@ -106,8 +106,8 @@ EOF
                 chmod 400 /etc/cozy/server.key
         fi
 
-	echo 'Configuring Nginx...'
         if [ -d /etc/nginx ]; then
+		echo 'Configuring Nginx...'
 		if [ -f /etc/nginx/sites-enabled/default ]; then
 			rm /etc/nginx/sites-enabled/default
 		fi
@@ -156,6 +156,40 @@ EOF
 			service nginx reload
 		fi
 		nginx -t && echo "Cozy installation done!"
+	elif [ -f /etc/apache2/apache2.conf ]; then
+		echo 'Configuring Apache2...'
+		a2enmod ssl
+		a2enmod proxy_http
+		if [ ! -f /etc/apache2/sites-available/cozy.conf ]; then
+			cat > /etc/apache2/sites-available/cozy.conf <<EOF
+# /etc/apache2/sites-available/cozy.conf
+<IfModule mod_ssl.c>
+ <VirtualHost *:443>
+        ServerName      $COZY_DOMAIN
+        ServerAdmin     admin@serveur
+
+        SSLEngine               On
+        SSLCertificateFile      /etc/cozy/server.crt
+        SSLCertificateKeyFile   /etc/cozy/server.key
+
+        ProxyPass               / http://127.0.0.1:9104/ retry=0 Keepalive=On timeout=1600
+        ProxyPassReverse        / http://127.0.0.1:9104/
+        setenv proxy-initial-not-pooled 1
+
+        CustomLog               /var/log/apache2/cozy-access.log "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+        ErrorLog                /var/log/apache2/cozy-error.log
+
+ </VirtualHost>
+</IfModule>
+EOF
+		fi
+		if [ ! -f /etc/apache2/sites-enabled/cozy.conf ]; then
+			ln -s /etc/apache2/sites-available/cozy.conf /etc/apache2/sites-enabled/cozy.conf
+			apachectl configtest && apachectl restart
+		fi
+		apachectl configtest && echo "Cozy installation done!"
+	else
+		echo "May be you missed to install an http server"
         fi
     ;;
 
