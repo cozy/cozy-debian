@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # postrm script for cozy
 #
 # see: dh_installdeb(1)
@@ -17,32 +17,39 @@ set -e
 #          <overwriter-version>
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
-
+SUPERVISORD_RELOAD=
 
 case "$1" in
-    purge|abort-install)
-	    rm -rf /etc/cozy
-    ;;
+	purge|abort-install)
+		[ -d /etc/cozy ] && rm -rf /etc/cozy
+		;;
 
-    remove|purge|abort-install)
-	    # npm uninstall -g cozy-controller cozy-monitor
-	    for user in cozy cozy-data-system cozy-home; do
-		    userdel $user
-	    done
-	    rm -rf /usr/local/cozy
-	    rm /etc/supervisor/conf.d/cozy-indexer.conf /etc/supervisor/conf.d/cozy-controller.conf
-	    supervisorctl reload
-	    rm /etc/nginx/conf.d/cozy
-	    service nginx reload
-    ;;
+	remove|purge|abort-install)
+		# npm uninstall -g cozy-controller cozy-monitor
+		for user in cozy cozy-data-system cozy-home; do
+			id $user >/dev/null 2>&1 && userdel $user
+		done
+		[ -d /usr/local/cozy ] && rm -rf /usr/local/cozy
+		for file in /etc/supervisor/conf.d/cozy-indexer.conf /etc/supervisor/conf.d/cozy-controller.conf; do
+			if [ -f $file ]; then
+				rm $file
+				SUPERVISORD_RELOAD=1
+			fi
+		done
+		[[ $SUPERVISORD_RELOAD ]] && supervisorctl reload
+		if [ -f /etc/nginx/conf.d/cozy.conf ]; then
+			rm /etc/nginx/conf.d/cozy.conf
+			service nginx reload
+		fi
+		;;
 
-    upgrade|failed-upgrade|abort-upgrade|disappear)
-    ;;
+	upgrade|failed-upgrade|abort-upgrade|disappear)
+		;;
 
-    *)
-        echo "postrm called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
+	*)
+		echo "postrm called with unknown argument \`$1'" >&2
+		exit 1
+		;;
 esac
 
 # dh_installdeb will replace this with shell code automatically
