@@ -21,11 +21,14 @@
 case "$1" in
     configure)
 	# Check their answer.
-	db_input high cozy/fqdn || true
-	db_go || true
+	COZY_DOMAIN=
+	while [ -z $COZY_DOMAIN ]; do
+		db_input high cozy/fqdn || true
+		db_go || true
 
-	db_get cozy/fqdn || true
-	COZY_DOMAIN=$RET
+		db_get cozy/fqdn || true
+		COZY_DOMAIN=$RET
+	done
 
 	echo "Chosen domain name for Cozy: $COZY_DOMAIN"
 

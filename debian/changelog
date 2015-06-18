@@ -1,3 +1,15 @@
+cozy (1.5) unstable; urgency=medium
+
+  * Fix https://github.com/cozy/cozy-debian/issues/5
+
+ -- Nicolas Ledez <nicolas@cozycloud.cc>  Thu, 18 Jun 2015 10:31:00 +0000
+
+cozy (1.4) unstable; urgency=medium
+
+  * Fix https://github.com/cozy/cozy-debian/issues/2
+
+ -- Nicolas Ledez <nicolas@cozycloud.cc>  Thu, 18 Jun 2015 10:20:30 +0000
+
 cozy (1.3) unstable; urgency=medium
 
   * Add Apache2 support

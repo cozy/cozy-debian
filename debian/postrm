@@ -25,7 +25,7 @@ case "$1" in
 		;;
 
 	remove|purge|abort-install)
-		# npm uninstall -g cozy-controller cozy-monitor
+		npm uninstall -g cozy-controller cozy-monitor
 		for user in cozy cozy-data-system cozy-home; do
 			echo "Remove user $user"
 			id $user >/dev/null 2>&1 && userdel $user

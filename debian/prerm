@@ -19,10 +19,14 @@ set -e
 
 case "$1" in
     remove|deconfigure)
-	    APPS="$(cozy-monitor status | grep -vE '(postfix|couch|index|controller|ds|home|proxy)' | sed 's/:.*//' | xargs echo)"
-	    APPS="$APPS proxy home data-system"
-	    for app in $APPS ; do cozy-monitor uninstall $app ; done
-	    supervisorctl stop cozy-controller cozy-indexer
+	    which cozy-monitor >/dev/null 2>&1
+	    RESULT=$?
+	    if [ "$RESULT" = "0" ]; then
+		    APPS="$(cozy-monitor status | grep -vE '(postfix|couch|index|controller|ds|home|proxy)' | sed 's/:.*//' | xargs echo)"
+		    APPS="$APPS proxy home data-system"
+		    for app in $APPS ; do cozy-monitor uninstall $app ; done
+	    fi
+	    which supervisorctl >/dev/null 2>&1 && supervisorctl stop cozy-controller cozy-indexer
     ;;
 
     upgrade)
