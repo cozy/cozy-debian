@@ -1,3 +1,9 @@
+cozy (1.6) unstable; urgency=medium
+
+  * Move some Depends in Pre-Depends
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Tue, 23 Jun 2015 23:31:04 +0000
+
 cozy (1.5) unstable; urgency=medium
 
   * Fix https://github.com/cozy/cozy-debian/issues/5
