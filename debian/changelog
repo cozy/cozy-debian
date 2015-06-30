@@ -1,3 +1,9 @@
+cozy (1.8) unstable; urgency=medium
+
+  * Better uninstallation
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Tue, 30 Jun 2015 19:13:29 +0000
+
 cozy (1.7) unstable; urgency=medium
 
   * Update Recommends to add other MTA

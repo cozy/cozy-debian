@@ -22,6 +22,8 @@ SUPERVISORD_RELOAD=
 case "$1" in
 	purge|abort-install)
 		[ -d /etc/cozy ] && echo "Delete /etc/cozy directory" && rm -rf /etc/cozy
+		[ -d /usr/local/var/log/cozy ] && echo "Delete /usr/local/var/log/cozy directory" && rm -rf /usr/local/var/log/cozy
+		[ -d /usr/local/cozy ] && echo "Delete /usr/local/cozy directory" && rm -rf /usr/local/cozy
 		;;
 
 	remove|purge|abort-install)
