@@ -1,0 +1,8 @@
+[program:cozy-controller]
+autorestart=true
+autostart=true
+command=cozy-controller
+environment=NODE_ENV=production
+redirect_stderr=true
+user=root
+priority=11

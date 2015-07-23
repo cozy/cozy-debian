@@ -1,0 +1,27 @@
+# /etc/apache2/sites-available/cozy.conf
+<IfModule mod_ssl.c>
+ <VirtualHost *:443>
+        ServerName      %COZY_DOMAIN%
+        ServerAdmin     admin@serveur
+
+        SSLEngine               On
+        SSLCertificateFile      /etc/cozy/server.crt
+        SSLCertificateKeyFile   /etc/cozy/server.key
+
+        ProxyPass               / http://127.0.0.1:9104/ retry=0 Keepalive=On timeout=1600
+        ProxyPassReverse        / http://127.0.0.1:9104/
+        setenv proxy-initial-not-pooled 1
+
+        CustomLog               /var/log/apache2/cozy-access.log "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+        ErrorLog                /var/log/apache2/cozy-error.log
+
+ </VirtualHost>
+
+ <VirtualHost *:80>
+        ServerName      %COZY_DOMAIN%
+        ServerAdmin     admin@serveur
+
+	Redirect permanent / https://%COZY_DOMAIN%/
+
+ </VirtualHost>
+</IfModule>

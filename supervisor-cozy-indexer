@@ -1,0 +1,7 @@
+[program:cozy-indexer]
+autorestart=true
+command=cozy-indexer
+directory=/var/lib/cozy-indexer
+redirect_stderr=true
+user=cozy
+priority=9

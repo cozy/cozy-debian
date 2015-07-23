@@ -1,0 +1,25 @@
+#!/bin/sh -e
+
+# Use debconf.
+. /usr/share/debconf/confmodule
+
+case "$1" in
+    configure|reconfigure)
+	COZY_DOMAIN=
+	while [ -z $COZY_DOMAIN ]; do
+	    db_input high cozy/fqdn || true
+	    db_go
+
+	    db_get cozy/fqdn || true
+	    COZY_DOMAIN=$RET
+	done
+    ;;
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+db_stop
+
+exit 0

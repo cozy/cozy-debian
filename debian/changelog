@@ -1,3 +1,9 @@
+cozy (1.9) unstable; urgency=medium
+
+  * Use ucf to handle config files
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Wed, 22 Jul 2015 14:25:03 +0000
+
 cozy (1.8) unstable; urgency=medium
 
   * Better uninstallation

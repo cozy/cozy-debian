@@ -24,6 +24,10 @@ case "$1" in
 		[ -d /etc/cozy ] && echo "Delete /etc/cozy directory" && rm -rf /etc/cozy
 		[ -d /usr/local/var/log/cozy ] && echo "Delete /usr/local/var/log/cozy directory" && rm -rf /usr/local/var/log/cozy
 		[ -d /usr/local/cozy ] && echo "Delete /usr/local/cozy directory" && rm -rf /usr/local/cozy
+		ucf --purge /etc/supervisor/conf.d/cozy-indexer.conf
+		ucf --purge /etc/supervisor/conf.d/cozy-controller.conf
+		ucf --purge /etc/nginx/conf.d/cozy.conf
+		ucf --purge /etc/apache2/sites-available/cozy.conf
 		;;
 
 	remove|purge|abort-install)

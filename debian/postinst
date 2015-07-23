@@ -19,16 +19,10 @@
 . /usr/share/debconf/confmodule
 
 case "$1" in
-    configure)
-	# Check their answer.
+    configure|reconfigure)
 	COZY_DOMAIN=
-	while [ -z $COZY_DOMAIN ]; do
-		db_input high cozy/fqdn || true
-		db_go || true
-
-		db_get cozy/fqdn || true
-		COZY_DOMAIN=$RET
-	done
+	db_get cozy/fqdn || true
+	COZY_DOMAIN=$RET
 
 	echo "Chosen domain name for Cozy: $COZY_DOMAIN"
 
@@ -58,34 +52,31 @@ case "$1" in
                 mkdir -p /var/lib/cozy-indexer && \
                 chown -R cozy:cozy /var/lib/cozy-indexer
         fi
-        if [ ! -f /etc/supervisor/conf.d/cozy-indexer.conf ]; then
-                cat > /etc/supervisor/conf.d/cozy-indexer.conf <<'EOF'
-[program:cozy-indexer]
-autorestart=true
-command=cozy-indexer
-directory=/var/lib/cozy-indexer
-redirect_stderr=true
-user=cozy
-priority=9
-EOF
-                supervisorctl reload
-        fi
+	CONFIGFILE=/etc/supervisor/conf.d/cozy-indexer.conf
+	if [ -f $CONFIGFILE ]; then
+		BEFORE=`sha1sum $CONFIGFILE`
+	else
+		BEFORE=
+	fi
+	ucf --three-way --debconf-ok /usr/share/cozy/supervisor-cozy-indexer $CONFIGFILE
+	AFTER=`sha1sum $CONFIGFILE`
+	if [ "$BEFORE" != "$AFTER" ]; then
+		supervisorctl reload
+	fi
 	while ! curl -s 127.0.0.1:9102/ >/dev/null; do echo "Waiting for Cozy Indexer to start..."; sleep 5; done
 
 	echo 'Configuring Cozy Controller...'
-        if [ ! -f /etc/supervisor/conf.d/cozy-controller.conf ]; then
-                cat > /etc/supervisor/conf.d/cozy-controller.conf <<'EOF'
-[program:cozy-controller]
-autorestart=true
-autostart=true
-command=cozy-controller
-environment=NODE_ENV=production
-redirect_stderr=true
-user=root
-priority=11
-EOF
-                supervisorctl reload
-        fi
+	CONFIGFILE=/etc/supervisor/conf.d/cozy-controller.conf
+	if [ -f $CONFIGFILE ]; then
+		BEFORE=`sha1sum $CONFIGFILE`
+	else
+		BEFORE=
+	fi
+	ucf --three-way --debconf-ok /usr/share/cozy/supervisor-cozy-controller $CONFIGFILE
+	AFTER=`sha1sum $CONFIGFILE`
+	if [ "$BEFORE" != "$AFTER" ]; then
+		supervisorctl reload
+	fi
         while ! curl -s 127.0.0.1:9102 >/dev/null; do echo "Waiting for Cozy Controller to start..."; sleep 5; done
 
 	echo 'Installing Cozy Platform apps...'
@@ -114,48 +105,18 @@ EOF
 		if [ -f /etc/nginx/sites-enabled/default ]; then
 			rm /etc/nginx/sites-enabled/default
 		fi
-		if [ ! -f /etc/nginx/conf.d/cozy.conf ]; then
-			cat > /etc/nginx/conf.d/cozy.conf <<EOF
-server {
-    listen 443;
-
-    server_name $COZY_DOMAIN;
-
-    ssl_certificate /etc/cozy/server.crt;
-    ssl_certificate_key /etc/cozy/server.key;
-    ssl_dhparam /etc/cozy/dh.pem;
-    ssl_session_cache shared:SSL:10m;
-    ssl_session_timeout 10m;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers ALL:!aNULL:!eNULL:!LOW:!EXP:!RC4:!3DES:+HIGH:+MEDIUM;
-    ssl_prefer_server_ciphers on;
-    ssl on;
-
-    gzip_vary on;
-    client_max_body_size 1024M;
-
-    add_header Strict-Transport-Security max-age=2678400;
-
-    location / {
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header Host \$http_host;
-        proxy_redirect http:// https://;
-        proxy_pass http://127.0.0.1:9104;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-    }
-
-    access_log /var/log/nginx/cozy.log;
-}
-
-# Always redirect http:// to https://
-server {
-    listen 80;
-    server_name $COZY_DOMAIN;
-    return 301 https://\$host\$request_uri;
-}
-EOF
+		TMPFILE=`mktemp`
+		CONFIGFILE=/etc/nginx/conf.d/cozy.conf
+		if [ -f $CONFIGFILE ]; then
+			BEFORE=`sha1sum $CONFIGFILE`
+		else
+			BEFORE=
+		fi
+		sed "s/%COZY_DOMAIN%/$COZY_DOMAIN/" /usr/share/cozy/nginx-config > $TMPFILE
+		ucf --three-way --debconf-ok $TMPFILE $CONFIGFILE
+		rm $TMPFILE
+		AFTER=`sha1sum $CONFIGFILE`
+		if [ "$BEFORE" != "$AFTER" ]; then
 			service nginx status >/dev/null 2>&1 && service nginx reload
 		fi
 		nginx -t && echo "Cozy installation done!"
@@ -163,31 +124,22 @@ EOF
 		echo 'Configuring Apache2...'
 		a2enmod ssl
 		a2enmod proxy_http
-		if [ ! -f /etc/apache2/sites-available/cozy.conf ]; then
-			cat > /etc/apache2/sites-available/cozy.conf <<EOF
-# /etc/apache2/sites-available/cozy.conf
-<IfModule mod_ssl.c>
- <VirtualHost *:443>
-        ServerName      $COZY_DOMAIN
-        ServerAdmin     admin@serveur
-
-        SSLEngine               On
-        SSLCertificateFile      /etc/cozy/server.crt
-        SSLCertificateKeyFile   /etc/cozy/server.key
-
-        ProxyPass               / http://127.0.0.1:9104/ retry=0 Keepalive=On timeout=1600
-        ProxyPassReverse        / http://127.0.0.1:9104/
-        setenv proxy-initial-not-pooled 1
-
-        CustomLog               /var/log/apache2/cozy-access.log "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
-        ErrorLog                /var/log/apache2/cozy-error.log
-
- </VirtualHost>
-</IfModule>
-EOF
+		TMPFILE=`mktemp`
+		CONFIGFILE=/etc/apache2/sites-available/cozy.conf
+		if [ -f $CONFIGFILE ]; then
+			BEFORE=`sha1sum $CONFIGFILE`
+		else
+			BEFORE=
 		fi
+		sed "s/%COZY_DOMAIN%/$COZY_DOMAIN/" /usr/share/cozy/apache-config > $TMPFILE
+		ucf --three-way --debconf-ok $TMPFILE $CONFIGFILE
+		rm $TMPFILE
 		if [ ! -f /etc/apache2/sites-enabled/cozy.conf ]; then
+			BEFORE=
 			ln -s /etc/apache2/sites-available/cozy.conf /etc/apache2/sites-enabled/cozy.conf
+		fi
+		AFTER=`sha1sum $CONFIGFILE`
+		if [ "$BEFORE" != "$AFTER" ]; then
 			apachectl configtest && apachectl restart
 		fi
 		apachectl configtest && echo "Cozy installation done!"
