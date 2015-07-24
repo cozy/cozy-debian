@@ -90,12 +90,39 @@ case "$1" in
                 cozy-monitor install proxy
         fi
 
-	CURRENT_DOMAIN=`/usr/share/cozy/cozy-get-domain.py`
+	CURRENT_DOMAIN=`/usr/share/cozy/cozy-get-instance-param.py domain`
 	if [ "$CURRENT_DOMAIN" = "$COZY_DOMAIN" ]; then
 		echo "Cozy allready configured with domain: $COZY_DOMAIN"
 	else
 		echo "Configure Cozy with domain: $COZY_DOMAIN"
 		coffee /usr/local/cozy/apps/home/commands.coffee setdomain $COZY_DOMAIN
+	fi
+
+	CURRENT_BACKGROUND=`/usr/share/cozy/cozy-get-instance-param.py background`
+	if [ "$CURRENT_BACKGROUND" != "None" ]; then
+		echo "Cozy allready configured with a background: $CURRENT_BACKGROUND"
+	else
+		echo "Configure Cozy with default background"
+		curl -X POST http://localhost:9103/api/instance -H "Content-Type: application/json" -d '{"background":"background-07"}'
+	fi
+
+	echo "Install default apps"
+	for app in calendar contacts photos emails files sync; do
+		if [ ! -f /usr/local/cozy/apps/.first-install-$app ]; then
+			if [ -d /usr/local/cozy/apps/$app ]; then
+				touch /usr/local/cozy/apps/.first-install-$app
+			else
+				cozy-monitor install $app && touch /usr/local/cozy/apps/.first-install-$app
+			fi
+		fi
+	done
+
+	if [ ! -f /usr/local/cozy/apps/.first-install-import-from-google ]; then
+		if [ -d /usr/local/cozy/apps/import-from-google ]; then
+			touch /usr/local/cozy/apps/.first-install-import-from-google
+		else
+			cozy-monitor install import-from-google -r https://github.com/cozy-labs/import-from-google.git && touch /usr/local/cozy/apps/.first-install-import-from-google
+		fi
 	fi
 
 	echo 'Generating SSL keys and certificates...'

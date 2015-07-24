@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import sys
 import json
 import urllib2
 
@@ -25,7 +26,7 @@ def encodeUserData(user, password):
     return "Basic " + (user + ":" + password).encode("base64").rstrip()
 
 
-def get_cozy_domain():
+def get_cozy_param(param):
     '''
     Return the actual admin
     '''
@@ -41,8 +42,14 @@ def get_cozy_domain():
     if len(rows) == 0:
         return None
     else:
-        return rows[0]['value']['domain']
+        return rows[0].get('value', {}).get(param, None)
 
 
 if __name__ == '__main__':
-    print get_cozy_domain()
+    if len(sys.argv) != 2:
+        script_name = sys.argv[0]
+        print 'Call me with:'
+        print '{} domain'.format(script_name)
+        print '{} background'.format(script_name)
+    else:
+        print get_cozy_param(sys.argv[1])
