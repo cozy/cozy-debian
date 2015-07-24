@@ -35,3 +35,4 @@ override_dh_auto_install:
 	cp -f $(CURDIR)/apache-config $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/supervisor-cozy-indexer $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/supervisor-cozy-controller $(CURDIR)/debian/cozy/usr/share/cozy
+	cp -f $(CURDIR)/cozy-get-domain.py $(CURDIR)/debian/cozy/usr/share/cozy

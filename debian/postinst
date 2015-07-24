@@ -58,7 +58,7 @@ case "$1" in
 	else
 		BEFORE=
 	fi
-	ucf --three-way --debconf-ok /usr/share/cozy/supervisor-cozy-indexer $CONFIGFILE
+	ucf --debconf-ok /usr/share/cozy/supervisor-cozy-indexer $CONFIGFILE
 	AFTER=`sha1sum $CONFIGFILE`
 	if [ "$BEFORE" != "$AFTER" ]; then
 		supervisorctl reload
@@ -72,7 +72,7 @@ case "$1" in
 	else
 		BEFORE=
 	fi
-	ucf --three-way --debconf-ok /usr/share/cozy/supervisor-cozy-controller $CONFIGFILE
+	ucf --debconf-ok /usr/share/cozy/supervisor-cozy-controller $CONFIGFILE
 	AFTER=`sha1sum $CONFIGFILE`
 	if [ "$BEFORE" != "$AFTER" ]; then
 		supervisorctl reload
@@ -89,6 +89,14 @@ case "$1" in
         if [ ! -d /usr/local/cozy/apps/proxy ]; then
                 cozy-monitor install proxy
         fi
+
+	CURRENT_DOMAIN=`/usr/share/cozy/cozy-get-domain.py`
+	if [ "$CURRENT_DOMAIN" = "$COZY_DOMAIN" ]; then
+		echo "Cozy allready configured with domain: $COZY_DOMAIN"
+	else
+		echo "Configure Cozy with domain: $COZY_DOMAIN"
+		coffee /usr/local/cozy/apps/home/commands.coffee setdomain $COZY_DOMAIN
+	fi
 
 	echo 'Generating SSL keys and certificates...'
         if [ ! -f /etc/cozy/dh.pem ]; then
@@ -113,7 +121,7 @@ case "$1" in
 			BEFORE=
 		fi
 		sed "s/%COZY_DOMAIN%/$COZY_DOMAIN/" /usr/share/cozy/nginx-config > $TMPFILE
-		ucf --three-way --debconf-ok $TMPFILE $CONFIGFILE
+		ucf --debconf-ok $TMPFILE $CONFIGFILE
 		rm $TMPFILE
 		AFTER=`sha1sum $CONFIGFILE`
 		if [ "$BEFORE" != "$AFTER" ]; then
@@ -132,7 +140,7 @@ case "$1" in
 			BEFORE=
 		fi
 		sed "s/%COZY_DOMAIN%/$COZY_DOMAIN/" /usr/share/cozy/apache-config > $TMPFILE
-		ucf --three-way --debconf-ok $TMPFILE $CONFIGFILE
+		ucf --debconf-ok $TMPFILE $CONFIGFILE
 		rm $TMPFILE
 		if [ ! -f /etc/apache2/sites-enabled/cozy.conf ]; then
 			BEFORE=
