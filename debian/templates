@@ -7,3 +7,11 @@ Description: Domain name of your Cozy
  web server will configured with this domain name.
  .
  i.e.: cozy.example.com
+
+Template: cozy/purge_db
+Type: boolean
+Default: true
+Description: Purge database?
+ If you say YES, the cozy database is DELETED. And you lose all your data.  We
+ suggest to make a backup of /var/lib/couchdb/cozy.couch. You can do a hot copy.
+ CouchDB is design to can backup started.

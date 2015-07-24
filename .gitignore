@@ -1,0 +1,5 @@
+debian/cozy.debhelper.log
+debian/cozy.postrm.debhelper
+debian/cozy.substvars
+debian/cozy/
+debian/files

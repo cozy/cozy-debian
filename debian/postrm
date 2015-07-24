@@ -5,6 +5,9 @@
 
 set -e
 
+# Use debconf.
+. /usr/share/debconf/confmodule
+
 # summary of how this script can be called:
 #        * <postrm> `remove'
 #        * <postrm> `purge'
@@ -21,6 +24,22 @@ SUPERVISORD_RELOAD=
 
 case "$1" in
 	purge|abort-install)
+		COZY_PURGE_DB=
+		db_input high cozy/purge_db || true
+		db_go
+
+		db_get cozy/purge_db || true
+		COZY_PURGE_DB=$RET
+		if [ $COZY_PURGE_DB ]; then
+			COUCH_USER=$(sed -n '1,1p' /etc/cozy/couchdb.login)
+			COUCH_PASS=$(sed -n '2,1p' /etc/cozy/couchdb.login)
+			echo "Purge cozy database"
+			curl -X DELETE http://${COUCH_USER}:${COUCH_PASS}@127.0.0.1:5984/cozy
+			echo "Purge CouchDB cozy user"
+			curl -X DELETE http://${COUCH_USER}:${COUCH_PASS}@127.0.0.1:5984/_config/admins/${COUCH_USER}
+		else
+			echo "Keep cozy database"
+		fi
 		[ -d /etc/cozy ] && echo "Delete /etc/cozy directory" && rm -rf /etc/cozy
 		[ -d /usr/local/var/log/cozy ] && echo "Delete /usr/local/var/log/cozy directory" && rm -rf /usr/local/var/log/cozy
 		[ -d /usr/local/cozy ] && echo "Delete /usr/local/cozy directory" && rm -rf /usr/local/cozy
