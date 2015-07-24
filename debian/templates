@@ -15,3 +15,11 @@ Description: Purge database?
  If you say YES, the cozy database is DELETED. And you lose all your data.  We
  suggest to make a backup of /var/lib/couchdb/cozy.couch. You can do a hot copy.
  CouchDB is design to can backup started.
+
+Template: cozy/certificate
+Type: text
+Default: true
+Description: Self-signed certificate
+ Cozy Mobile won't recognize it until you validate it on your mobile. Go there:
+ https://davdroid.bitfire.at/faq/entry/importing-a-certificate for instruction
+ on how to do it.
