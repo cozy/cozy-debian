@@ -48,10 +48,16 @@ case "$1" in
         chmod 640 /etc/cozy/couchdb.login
 
 	echo 'Configuring Cozy Indexer...'
-        if [ ! -d /var/lib/cozy-indexer ]; then
-                mkdir -p /var/lib/cozy-indexer && \
-                chown -R cozy:cozy /var/lib/cozy-indexer
+	COZY_INDEXER_DIRECTORY=/var/lib/cozy-indexer
+        if [ ! -d $COZY_INDEXER_DIRECTORY ]; then
+		echo "Create $COZY_INDEXER_DIRECTORY"
+                mkdir -p $COZY_INDEXER_DIRECTORY
         fi
+	if [ "$(stat -c '%U:%G' $COZY_INDEXER_DIRECTORY)" != "cozy:cozy" ]; then
+		echo "Fix $COZY_INDEXER_DIRECTORY owner"
+                chown cozy:cozy $COZY_INDEXER_DIRECTORY
+	fi
+
 	CONFIGFILE=/etc/supervisor/conf.d/cozy-indexer.conf
 	if [ -f $CONFIGFILE ]; then
 		BEFORE=`sha1sum $CONFIGFILE`
