@@ -98,7 +98,7 @@ case "$1" in
 
 	CURRENT_DOMAIN=`/usr/share/cozy/cozy-get-instance-param.py domain`
 	if [ "$CURRENT_DOMAIN" = "$COZY_DOMAIN" ]; then
-		echo "Cozy allready configured with domain: $COZY_DOMAIN"
+		echo "Cozy already configured with domain: $COZY_DOMAIN"
 	else
 		echo "Configure Cozy with domain: $COZY_DOMAIN"
 		coffee /usr/local/cozy/apps/home/commands.coffee setdomain $COZY_DOMAIN
@@ -106,7 +106,7 @@ case "$1" in
 
 	CURRENT_BACKGROUND=`/usr/share/cozy/cozy-get-instance-param.py background`
 	if [ "$CURRENT_BACKGROUND" != "None" ]; then
-		echo "Cozy allready configured with a background: $CURRENT_BACKGROUND"
+		echo "Cozy already configured with a background: $CURRENT_BACKGROUND"
 	else
 		echo "Configure Cozy with default background"
 		curl -X POST http://localhost:9103/api/instance -H "Content-Type: application/json" -d '{"background":"background-07"}'
