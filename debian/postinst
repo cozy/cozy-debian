@@ -89,12 +89,15 @@ case "$1" in
         if [ ! -d /usr/local/cozy/apps/data-system ]; then
                 cozy-monitor install-cozy-stack
         fi
+        cozy-monitor start data-system
         if [ ! -d /usr/local/cozy/apps/home ]; then
                 cozy-monitor install home
         fi
+        cozy-monitor start home
         if [ ! -d /usr/local/cozy/apps/proxy ]; then
                 cozy-monitor install proxy
         fi
+        cozy-monitor start proxy
 
 	CURRENT_DOMAIN=`/usr/share/cozy/cozy-get-instance-param.py domain`
 	if [ "$CURRENT_DOMAIN" = "$COZY_DOMAIN" ]; then
