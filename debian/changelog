@@ -5,6 +5,9 @@ cozy (1.14) unstable; urgency=medium
   * Move cozy/certificate outside COZY_DOMAIN loop
   * Now use bash in debian/postinst
   * Loop only 20 time in wait couchdb/indexer/controller
+  * Forcing the stack's start order
+  * Clean debian/postrm
+  * Purge ucf conf at remove for /etc/supervisor/conf.d/cozy-*.conf
 
  -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Tue, 28 Jul 2015 13:00:49 +0000
 

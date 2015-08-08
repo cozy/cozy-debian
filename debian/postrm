@@ -44,13 +44,11 @@ case "$1" in
 		[ -d /usr/local/var/log/cozy ] && echo "Delete /usr/local/var/log/cozy directory" && rm -rf /usr/local/var/log/cozy
 		[ -d /usr/local/cozy ] && echo "Delete /usr/local/cozy directory" && rm -rf /usr/local/cozy
 		[ -d /var/lib/cozy-indexer ] && echo "Delete /var/lib/cozy-indexer directory" && rm -rf /var/lib/cozy-indexer
-		ucf --purge /etc/supervisor/conf.d/cozy-indexer.conf
-		ucf --purge /etc/supervisor/conf.d/cozy-controller.conf
 		ucf --purge /etc/nginx/conf.d/cozy.conf
 		ucf --purge /etc/apache2/sites-available/cozy.conf
 		;;
 
-	remove|purge|abort-install)
+	remove)
 		npm uninstall -g cozy-controller cozy-monitor
 		for user in cozy cozy-data-system cozy-home; do
 			echo "Remove user $user"
@@ -60,6 +58,7 @@ case "$1" in
 		for file in /etc/supervisor/conf.d/cozy-indexer.conf /etc/supervisor/conf.d/cozy-controller.conf; do
 			if [ -f $file ]; then
 				echo "Remove $file"
+				ucf --purge $file
 				rm $file
 				SUPERVISORD_RELOAD=1
 			fi
