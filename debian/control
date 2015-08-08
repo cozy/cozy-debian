@@ -10,10 +10,11 @@ Package: cozy
 Architecture: all
 Pre-Depends: ca-certificates, couchdb, supervisor, cozy-indexer
 Recommends: nginx | apache2, postfix | exim4 | sendmail | mail-transport-agent
-Depends: ${misc:Depends}, ucf,
-	bash, build-essential, curl, git, git-core, imagemagick, libssl-dev,
-	libxml2-dev, libxslt1-dev, python-dev, python-pip, python-setuptools,
-	python-virtualenv, python-software-properties, software-properties-common,
-	sqlite3, sudo, pwgen, nodejs, nodejs-legacy, npm, coffeescript
+Depends: ${misc:Depends},
+	ucf, bash, build-essential, curl, git, git-core, imagemagick,
+	libssl-dev, libxml2-dev, libxslt1-dev, python-dev, python-pip,
+	python-setuptools, python-virtualenv, python-software-properties,
+	software-properties-common, sqlite3, sudo, pwgen, nodejs (>= 0.10.20),
+	nodejs-legacy (>= 0.10.20), npm, coffeescript
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>

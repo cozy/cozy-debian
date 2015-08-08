@@ -36,3 +36,4 @@ override_dh_auto_install:
 	cp -f $(CURDIR)/supervisor-cozy-indexer $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/supervisor-cozy-controller $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/cozy-get-instance-param.py $(CURDIR)/debian/cozy/usr/share/cozy
+	cp -f $(CURDIR)/compare-version.py $(CURDIR)/debian/cozy/usr/share/cozy

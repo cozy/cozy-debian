@@ -1,3 +1,11 @@
+cozy (1.14) unstable; urgency=medium
+
+  * Require nodejs >= v0.10.20 < v0.12.00
+  * Add message if nodejs version does'nt match
+  * Move cozy/certificate outside COZY_DOMAIN loop
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Tue, 28 Jul 2015 13:00:49 +0000
+
 cozy (1.13) unstable; urgency=medium
 
   * Delete /usr/local/cozy at purge
