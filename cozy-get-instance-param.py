@@ -30,19 +30,22 @@ def get_cozy_param(param):
     '''
     Return the actual admin
     '''
-    (COZY_USER, COZY_PASS) = get_admin()
-    url = 'http://127.0.0.1:5984/cozy/_design/cozyinstance/_view/all'
-    req = urllib2.Request(url)
-    req.add_header('Accept', 'application/json')
-    req.add_header("Content-type", "application/x-www-form-urlencoded")
-    req.add_header('Authorization', encodeUserData(COZY_USER, COZY_PASS))
-    res = urllib2.urlopen(req)
-    data = json.load(res)
-    rows = data['rows']
-    if len(rows) == 0:
+    try:
+        (COZY_USER, COZY_PASS) = get_admin()
+        url = 'http://127.0.0.1:5984/cozy/_design/cozyinstance/_view/all'
+        req = urllib2.Request(url)
+        req.add_header('Accept', 'application/json')
+        req.add_header("Content-type", "application/x-www-form-urlencoded")
+        req.add_header('Authorization', encodeUserData(COZY_USER, COZY_PASS))
+        res = urllib2.urlopen(req)
+        data = json.load(res)
+        rows = data['rows']
+        if len(rows) == 0:
+            return None
+        else:
+            return rows[0].get('value', {}).get(param, None)
+    except:
         return None
-    else:
-        return rows[0].get('value', {}).get(param, None)
 
 
 if __name__ == '__main__':
