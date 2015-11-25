@@ -1,3 +1,10 @@
+cozy (1.17) unstable; urgency=medium
+
+  * Fix Apache config
+  * Fix debian-reconfigure-cozy-domain.sh rights
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Wed, 25 Nov 2015 11:33:02 +0000
+
 cozy (1.16) unstable; urgency=medium
 
   * Add cozy-self-hosting at installation
