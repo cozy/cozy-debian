@@ -36,3 +36,7 @@ override_dh_auto_install:
 	cp -f $(CURDIR)/supervisor-cozy-controller $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/cozy-get-instance-param.py $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/compare-version.py $(CURDIR)/debian/cozy/usr/share/cozy
+	cp -f $(CURDIR)/debian-reconfigure-cozy-domain.sh $(CURDIR)/debian/cozy/usr/local/sbin/debian-reconfigure-cozy-domain.sh
+	cp -f $(CURDIR)/sudoers.d_cozy-self-hosting $(CURDIR)/debian/cozy/etc/sudoers.d/cozy-self-hosting
+	chown root:root $(CURDIR)/debian/cozy/etc/sudoers.d/cozy-self-hosting
+	chmod 440 $(CURDIR)/debian/cozy/etc/sudoers.d/cozy-self-hosting

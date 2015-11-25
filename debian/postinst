@@ -143,6 +143,14 @@ case "$1" in
 		fi
 	fi
 
+	if [ ! -f /usr/local/cozy/apps/.first-install-self-hosting ]; then
+		if [ -d /usr/local/cozy/apps/self-hosting ]; then
+			touch /usr/local/cozy/apps/.first-install-self-hosting
+		else
+			cozy-monitor install self-hosting -r https://github.com/cozy/cozy-self-hosting.git && touch /usr/local/cozy/apps/.first-install-self-hosting
+		fi
+	fi
+
 	echo 'Generating SSL keys and certificates...'
         if [ ! -f /etc/cozy/dh.pem ]; then
                 openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 2048

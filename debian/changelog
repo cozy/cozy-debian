@@ -1,6 +1,14 @@
+cozy (1.16) unstable; urgency=medium
+
+  * Add cozy-self-hosting at installation
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Wed, 25 Nov 2015 09:34:51 +0000
+
 cozy (1.15) unstable; urgency=medium
 
   * Remove indexer
+  * Allow websockets proxying on Apache
+  * Update README
 
  -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Wed, 25 Nov 2015 08:29:58 +0000
 

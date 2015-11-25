@@ -1,0 +1,1 @@
+cozy-self-hosting ALL=NOPASSWD: /usr/local/sbin/debian-reconfigure-cozy-domain.sh
