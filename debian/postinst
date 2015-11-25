@@ -71,39 +71,6 @@ case "$1" in
         chown cozy-data-system /etc/cozy/couchdb.login
         chmod 640 /etc/cozy/couchdb.login
 
-	echo 'Configuring Cozy Indexer...'
-	COZY_INDEXER_DIRECTORY=/var/lib/cozy-indexer
-        if [ ! -d $COZY_INDEXER_DIRECTORY ]; then
-		echo "Create $COZY_INDEXER_DIRECTORY"
-                mkdir -p $COZY_INDEXER_DIRECTORY
-        fi
-	if [ "$(stat -c '%U:%G' $COZY_INDEXER_DIRECTORY)" != "cozy:cozy" ]; then
-		echo "Fix $COZY_INDEXER_DIRECTORY owner"
-                chown cozy:cozy $COZY_INDEXER_DIRECTORY
-	fi
-
-	CONFIGFILE=/etc/supervisor/conf.d/cozy-indexer.conf
-	if [ -f $CONFIGFILE ]; then
-		BEFORE=`sha1sum $CONFIGFILE`
-	else
-		BEFORE=
-	fi
-	ucf --debconf-ok /usr/share/cozy/supervisor-cozy-indexer $CONFIGFILE
-	AFTER=`sha1sum $CONFIGFILE`
-	if [ "$BEFORE" != "$AFTER" ]; then
-		supervisorctl reload
-	fi
-	COUNT=0;MAX=20
-	while ! curl -s 127.0.0.1:9102/ >/dev/null; do
-		let "COUNT += 1"
-		echo "Waiting for Cozy Indexer to start... ($COUNT/$MAX)"
-		if [[ $COUNT -gt $MAX ]]; then
-			echo "Cozy Indexer is too long to start"
-			exit 1
-		fi
-		sleep 5
-	done
-
 	echo 'Configuring Cozy Controller...'
 	CONFIGFILE=/etc/supervisor/conf.d/cozy-controller.conf
 	if [ -f $CONFIGFILE ]; then

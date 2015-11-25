@@ -33,7 +33,6 @@ override_dh_auto_install:
 	mkdir -p $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/nginx-config $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/apache-config $(CURDIR)/debian/cozy/usr/share/cozy
-	cp -f $(CURDIR)/supervisor-cozy-indexer $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/supervisor-cozy-controller $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/cozy-get-instance-param.py $(CURDIR)/debian/cozy/usr/share/cozy
 	cp -f $(CURDIR)/compare-version.py $(CURDIR)/debian/cozy/usr/share/cozy

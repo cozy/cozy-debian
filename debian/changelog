@@ -1,3 +1,9 @@
+cozy (1.15) unstable; urgency=medium
+
+  * Remove indexer
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Wed, 25 Nov 2015 08:29:58 +0000
+
 cozy (1.14) unstable; urgency=medium
 
   * Require nodejs >= v0.10.20 < v0.12.00

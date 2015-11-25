@@ -43,9 +43,6 @@ case "$1" in
 		[ -d /etc/cozy ] && echo "Delete /etc/cozy directory" && rm -rf /etc/cozy
 		[ -d /usr/local/var/log/cozy ] && echo "Delete /usr/local/var/log/cozy directory" && rm -rf /usr/local/var/log/cozy
 		[ -d /usr/local/cozy ] && echo "Delete /usr/local/cozy directory" && rm -rf /usr/local/cozy
-		[ -d /var/lib/cozy-indexer ] && echo "Delete /var/lib/cozy-indexer directory" && rm -rf /var/lib/cozy-indexer
-		ucf --purge /etc/nginx/conf.d/cozy.conf
-		ucf --purge /etc/apache2/sites-available/cozy.conf
 		;;
 
 	remove)
@@ -55,7 +52,7 @@ case "$1" in
 			id $user >/dev/null 2>&1 && userdel $user
 		done
 		[ -d /usr/local/cozy ] && rm -rf /usr/local/cozy
-		for file in /etc/supervisor/conf.d/cozy-indexer.conf /etc/supervisor/conf.d/cozy-controller.conf; do
+		for file in /etc/supervisor/conf.d/cozy-controller.conf; do
 			if [ -f $file ]; then
 				echo "Remove $file"
 				ucf --purge $file
@@ -67,6 +64,7 @@ case "$1" in
 		if [ -f /etc/nginx/conf.d/cozy.conf ]; then
 			echo "Remove etc/nginx/conf.d/cozy.conf and restart Nginx"
 			rm /etc/nginx/conf.d/cozy.conf
+			ucf --purge /etc/nginx/conf.d/cozy.conf
 			service nginx reload
 		fi
 		if [ -f /etc/apache2/sites-enabled/cozy.conf ]; then
@@ -77,6 +75,7 @@ case "$1" in
 		if [ -f /etc/apache2/sites-available/cozy.conf ]; then
 			echo "Remove /etc/apache2/sites-available/cozy.conf"
 			rm /etc/apache2/sites-available/cozy.conf
+			ucf --purge /etc/apache2/sites-available/cozy.conf
 		fi
 		;;
 

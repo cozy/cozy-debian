@@ -20,11 +20,11 @@ case "$1" in
 	    which cozy-monitor >/dev/null 2>&1
 	    RESULT=$?
 	    if [ "$RESULT" = "0" ]; then
-		    APPS="$(cozy-monitor status | grep -vE '(postfix|couch|index|controller|data-system|ds|home|proxy)' | sed 's/:.*//;s/\[Error//' | xargs echo)"
+		    APPS="$(cozy-monitor status | grep -vE '(postfix|couch|controller|data-system|ds|home|proxy)' | sed 's/:.*//;s/\[Error//' | xargs echo)"
 		    APPS="$APPS proxy home data-system"
 		    for app in $APPS ; do cozy-monitor uninstall $app ; done
 	    fi
-	    which supervisorctl >/dev/null 2>&1 && supervisorctl stop cozy-controller cozy-indexer
+	    which supervisorctl >/dev/null 2>&1 && supervisorctl stop cozy-controller
     ;;
 
     upgrade)
