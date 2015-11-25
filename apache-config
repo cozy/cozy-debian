@@ -8,6 +8,11 @@
         SSLCertificateFile      /etc/cozy/server.crt
         SSLCertificateKeyFile   /etc/cozy/server.key
 
+        RewriteEngine           On
+        RewriteCond             %{REQUEST_URI} ^/.*socket\.io [NC]
+        RewriteCond             %{THE_REQUEST} websocket [NC]
+        RewriteRule             /(.*)           ws://127.0.0.1:9104/$1 [P,L]
+
         ProxyPass               / http://127.0.0.1:9104/ retry=0 Keepalive=On timeout=1600
         ProxyPassReverse        / http://127.0.0.1:9104/
         setenv proxy-initial-not-pooled 1

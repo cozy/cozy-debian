@@ -177,6 +177,8 @@ case "$1" in
 		echo 'Configuring Apache2...'
 		a2enmod ssl
 		a2enmod proxy_http
+		a2enmod proxy_wstunnel
+		a2enmod mod_rewrite
 		TMPFILE=`mktemp`
 		CONFIGFILE=/etc/apache2/sites-available/cozy.conf
 		if [ -f $CONFIGFILE ]; then
