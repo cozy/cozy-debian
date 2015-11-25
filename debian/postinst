@@ -186,7 +186,7 @@ case "$1" in
 		a2enmod ssl
 		a2enmod proxy_http
 		a2enmod proxy_wstunnel
-		a2enmod mod_rewrite
+		a2enmod rewrite
 		TMPFILE=`mktemp`
 		CONFIGFILE=/etc/apache2/sites-available/cozy.conf
 		if [ -f $CONFIGFILE ]; then
