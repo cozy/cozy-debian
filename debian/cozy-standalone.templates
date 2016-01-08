@@ -24,17 +24,3 @@ Description: Self-signed certificate
  https://davdroid.bitfire.at/faq/entry/importing-a-certificate for instruction
  on how to do it.
 
-Template: cozy/nodejs_minimum
-Type: text
-Default: true
-Description: Minimum version of NodeJS
- Cozy work better with NodeJS >= v0.10.20. If you haven't this version. Some
- application may not work perfectly
-
-Template: cozy/nodejs_maximum
-Type: text
-Default: true
-Description: Maximum version of NodeJS
- Cozy doesn't work with NodeJS >= v0.12.00. If you have this version (and this
- message) Cozy DOES NOT WORK!
-

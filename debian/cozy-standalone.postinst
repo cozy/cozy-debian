@@ -20,21 +20,6 @@
 
 case "$1" in
     configure|reconfigure)
-	NODEJS=`which node`
-	if [ -x $NODEJS ]; then
-		NODE_VERSION=`$NODEJS -v`
-		/usr/share/cozy/compare-version.py "$NODE_VERSION" '>=' '0.10.20' && RESULT=$? || RESULT=$?
-		if [ "$RESULT" = "1" ]; then
-			db_input high cozy/nodejs_minimum || true
-			db_go
-		fi
-		/usr/share/cozy/compare-version.py "$NODE_VERSION" '<' '0.12.00' && RESULT=$? || RESULT=$?
-		if [ "$RESULT" = "1" ]; then
-			db_input high cozy/nodejs_maximum || true
-			db_go
-		fi
-	fi
-
 	COZY_DOMAIN=
 	db_get cozy/fqdn || true
 	COZY_DOMAIN=$RET
@@ -108,7 +93,7 @@ case "$1" in
         fi
         cozy-monitor start proxy
 
-	CURRENT_DOMAIN=`/usr/share/cozy/cozy-get-instance-param.py domain`
+	CURRENT_DOMAIN=`/usr/bin/cozy_management get_cozy_param domain`
 	if [ "$CURRENT_DOMAIN" = "$COZY_DOMAIN" ]; then
 		echo "Cozy already configured with domain: $COZY_DOMAIN"
 	else
@@ -116,7 +101,7 @@ case "$1" in
 		coffee /usr/local/cozy/apps/home/commands.coffee setdomain $COZY_DOMAIN
 	fi
 
-	CURRENT_BACKGROUND=`/usr/share/cozy/cozy-get-instance-param.py background`
+	CURRENT_BACKGROUND=`/usr/bin/cozy_management get_cozy_param background`
 	if [ "$CURRENT_BACKGROUND" != "None" ]; then
 		echo "Cozy already configured with a background: $CURRENT_BACKGROUND"
 	else
@@ -140,14 +125,6 @@ case "$1" in
 			touch /usr/local/cozy/apps/.first-install-import-from-google
 		else
 			cozy-monitor install import-from-google -r https://github.com/cozy-labs/import-from-google.git && touch /usr/local/cozy/apps/.first-install-import-from-google
-		fi
-	fi
-
-	if [ ! -f /usr/local/cozy/apps/.first-install-self-hosting ]; then
-		if [ -d /usr/local/cozy/apps/self-hosting ]; then
-			touch /usr/local/cozy/apps/.first-install-self-hosting
-		else
-			cozy-monitor install self-hosting -r https://github.com/cozy/cozy-self-hosting.git && touch /usr/local/cozy/apps/.first-install-self-hosting
 		fi
 	fi
 

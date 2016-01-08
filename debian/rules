@@ -30,14 +30,14 @@ include /usr/share/dpkg/default.mk
 
 override_dh_auto_install:
 	dh_auto_install
-	mkdir -p $(CURDIR)/debian/cozy/usr/share/cozy
-	mkdir -p $(CURDIR)/debian/cozy/etc/sudoers.d
-	cp -f $(CURDIR)/nginx-config $(CURDIR)/debian/cozy/usr/share/cozy
-	cp -f $(CURDIR)/apache-config $(CURDIR)/debian/cozy/usr/share/cozy
-	cp -f $(CURDIR)/supervisor-cozy-controller $(CURDIR)/debian/cozy/usr/share/cozy
-	cp -f $(CURDIR)/cozy-get-instance-param.py $(CURDIR)/debian/cozy/usr/share/cozy
-	cp -f $(CURDIR)/compare-version.py $(CURDIR)/debian/cozy/usr/share/cozy
-	cp -f $(CURDIR)/debian-reconfigure-cozy-domain.sh $(CURDIR)/debian/cozy/usr/share/cozy/debian-reconfigure-cozy-domain.sh
-	cp -f $(CURDIR)/sudoers.d_cozy-self-hosting $(CURDIR)/debian/cozy/etc/sudoers.d/cozy-self-hosting
-	chown root:root $(CURDIR)/debian/cozy/etc/sudoers.d/cozy-self-hosting
-	chmod 440 $(CURDIR)/debian/cozy/etc/sudoers.d/cozy-self-hosting
+	mkdir -p $(CURDIR)/debian/cozy-depends/usr/share/cozy
+	cp -f $(CURDIR)/nginx-config $(CURDIR)/debian/cozy-depends/usr/share/cozy
+	cp -f $(CURDIR)/apache-config $(CURDIR)/debian/cozy-depends/usr/share/cozy
+	cp -f $(CURDIR)/supervisor-cozy-controller $(CURDIR)/debian/cozy-depends/usr/share/cozy
+	# cozy-app-self-hosting part
+	mkdir -p $(CURDIR)/debian/cozy-app-self-hosting/usr/share/cozy
+	mkdir -p $(CURDIR)/debian/cozy-app-self-hosting/etc/sudoers.d
+	cp -f $(CURDIR)/debian-reconfigure-cozy-domain.sh $(CURDIR)/debian/cozy-app-self-hosting/usr/share/cozy
+	cp -f $(CURDIR)/sudoers.d_cozy-self-hosting $(CURDIR)/debian/cozy-app-self-hosting/etc/sudoers.d/cozy-self-hosting
+	chown root:root $(CURDIR)/debian/cozy-app-self-hosting/etc/sudoers.d/cozy-self-hosting
+	chmod 440 $(CURDIR)/debian/cozy-app-self-hosting/etc/sudoers.d/cozy-self-hosting
