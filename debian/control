@@ -16,5 +16,11 @@ Depends: ${misc:Depends},
 	python-setuptools, python-virtualenv, python-software-properties,
 	software-properties-common, sqlite3, sudo, pwgen, nodejs (>= 0.10.20),
 	nodejs-legacy (>= 0.10.20), npm, coffeescript
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: Cozy is an app-based personal cloud you host at home
+ Cozy is an app-based personal cloud you host at home. It turns a low-cost
+ piece of hardware like a Raspberry Pi 2 or an online VPS into a powerful app
+ platform. It comes with common applications: a contacts manager, a calendar, a
+ webmail and a filebox. An Android app allows you to sync your contacts,
+ calendars and files with your mobile. Last but not least, the Cozy Community
+ has built many personal tools like a feed reader, a bank operation manager or
+ an IRC client (100 000 apps were downloaded in 2015).
