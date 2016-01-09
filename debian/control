@@ -11,13 +11,7 @@ Architecture: all
 Pre-Depends: cozy-standalone, cozy-app-self-hosting
 Depends: ${misc:Depends}
 Description: Cozy is an app-based personal cloud you host at home
- Cozy is an app-based personal cloud you host at home. It turns a low-cost
- piece of hardware like a Raspberry Pi 2 or an online VPS into a powerful app
- platform. It comes with common applications: a contacts manager, a calendar, a
- webmail and a filebox. An Android app allows you to sync your contacts,
- calendars and files with your mobile. Last but not least, the Cozy Community
- has built many personal tools like a feed reader, a bank operation manager or
- an IRC client (100 000 apps were downloaded in 2015).
+ ${Description}
 
 Package: cozy-depends
 Architecture: all
@@ -31,72 +25,48 @@ Depends: ${misc:Depends},
 	supervisor, python-cozy-management, apt-transport-https,
 	nodejs (>= 0.10.20), nodejs-legacy (>= 0.10.20)
 Description: Cozy is an app-based personal cloud you host at home
- Cozy is an app-based personal cloud you host at home. It turns a low-cost
- piece of hardware like a Raspberry Pi 2 or an online VPS into a powerful app
- platform. It comes with common applications: a contacts manager, a calendar, a
- webmail and a filebox. An Android app allows you to sync your contacts,
- calendars and files with your mobile. Last but not least, the Cozy Community
- has built many personal tools like a feed reader, a bank operation manager or
- an IRC client (100 000 apps were downloaded in 2015).
+ ${Description}
+ .
+ This package installs all previous dependencies.
 
 Package: cozy-standalone
 Architecture: all
 Pre-Depends: cozy-depends
 Depends: ${misc:Depends}
 Description: Cozy is an app-based personal cloud you host at home
- Cozy is an app-based personal cloud you host at home. It turns a low-cost
- piece of hardware like a Raspberry Pi 2 or an online VPS into a powerful app
- platform. It comes with common applications: a contacts manager, a calendar, a
- webmail and a filebox. An Android app allows you to sync your contacts,
- calendars and files with your mobile. Last but not least, the Cozy Community
- has built many personal tools like a feed reader, a bank operation manager or
- an IRC client (100 000 apps were downloaded in 2015).
+ ${Description}
+ .
+ This package installs Cozy.
 
 Package: cozy-nginx
 Architecture: all
 Depends: ${misc:Depends}, cozy-standalone, nginx
 Description: Cozy is an app-based personal cloud you host at home
- Cozy is an app-based personal cloud you host at home. It turns a low-cost
- piece of hardware like a Raspberry Pi 2 or an online VPS into a powerful app
- platform. It comes with common applications: a contacts manager, a calendar, a
- webmail and a filebox. An Android app allows you to sync your contacts,
- calendars and files with your mobile. Last but not least, the Cozy Community
- has built many personal tools like a feed reader, a bank operation manager or
- an IRC client (100 000 apps were downloaded in 2015).
+ ${Description}
+ .
+ This package installs Cozy+Nginx.
 
 Package: cozy-apache2
 Architecture: all
 Depends: ${misc:Depends}, cozy-standalone, apache2
 Description: Cozy is an app-based personal cloud you host at home
- Cozy is an app-based personal cloud you host at home. It turns a low-cost
- piece of hardware like a Raspberry Pi 2 or an online VPS into a powerful app
- platform. It comes with common applications: a contacts manager, a calendar, a
- webmail and a filebox. An Android app allows you to sync your contacts,
- calendars and files with your mobile. Last but not least, the Cozy Community
- has built many personal tools like a feed reader, a bank operation manager or
- an IRC client (100 000 apps were downloaded in 2015).
+ ${Description}
+ .
+ This package installs Cozy+Apache. But prefer Nginx if possible.
 
 Package: cozy-app-self-hosting
 Architecture: all
 Depends: ${misc:Depends}
 Pre-Depends: cozy-standalone
 Description: Cozy is an app-based personal cloud you host at home
- Cozy is an app-based personal cloud you host at home. It turns a low-cost
- piece of hardware like a Raspberry Pi 2 or an online VPS into a powerful app
- platform. It comes with common applications: a contacts manager, a calendar, a
- webmail and a filebox. An Android app allows you to sync your contacts,
- calendars and files with your mobile. Last but not least, the Cozy Community
- has built many personal tools like a feed reader, a bank operation manager or
- an IRC client (100 000 apps were downloaded in 2015).
+ ${Description}
+ .
+ This package installs the self-hosting app with all scripts run as root.
 
 Package: cozy-apt-key
 Architecture: all
 Depends: ${misc:Depends}, apt
 Description: Cozy is an app-based personal cloud you host at home
- Cozy is an app-based personal cloud you host at home. It turns a low-cost
- piece of hardware like a Raspberry Pi 2 or an online VPS into a powerful app
- platform. It comes with common applications: a contacts manager, a calendar, a
- webmail and a filebox. An Android app allows you to sync your contacts,
- calendars and files with your mobile. Last but not least, the Cozy Community
- has built many personal tools like a feed reader, a bank operation manager or
- an IRC client (100 000 apps were downloaded in 2015).
+ ${Description}
+ .
+ This package helps you keep the GPG key update.

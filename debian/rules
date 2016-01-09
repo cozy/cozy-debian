@@ -29,6 +29,7 @@ include /usr/share/dpkg/default.mk
 
 
 override_dh_auto_install:
+	for i in $$(sed -n '/^Package:/s/^.* //p' debian/control); do cat debian/substvars.in >> debian/$$i.substvars; done
 	dh_auto_install
 	mkdir -p $(CURDIR)/debian/cozy-depends/usr/share/cozy
 	cp -f $(CURDIR)/nginx-config $(CURDIR)/debian/cozy-depends/usr/share/cozy
