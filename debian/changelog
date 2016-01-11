@@ -1,8 +1,14 @@
-cozy (1.18) unstable; urgency=medium
+cozy (1.19) unstable; urgency=medium
 
   * Split cozy in multiple packages
   * Move compare-version.py & cozy-get-instance-param.py in new package
     python-cozy-management
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Mon, 11 Jan 2016 10:47:39 +0000
+
+cozy (1.18) unstable; urgency=medium
+
+  * Package to remove collisions in the future
 
  -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Fri, 08 Jan 2016 14:41:26 +0000
 

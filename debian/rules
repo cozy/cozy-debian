@@ -31,10 +31,11 @@ include /usr/share/dpkg/default.mk
 override_dh_auto_install:
 	for i in $$(sed -n '/^Package:/s/^.* //p' debian/control); do cat debian/substvars.in >> debian/$$i.substvars; done
 	dh_auto_install
-	mkdir -p $(CURDIR)/debian/cozy-depends/usr/share/cozy
-	cp -f $(CURDIR)/nginx-config $(CURDIR)/debian/cozy-depends/usr/share/cozy
-	cp -f $(CURDIR)/apache-config $(CURDIR)/debian/cozy-depends/usr/share/cozy
-	cp -f $(CURDIR)/supervisor-cozy-controller $(CURDIR)/debian/cozy-depends/usr/share/cozy
+	# cozy-depends part
+	mkdir -p $(CURDIR)/debian/cozy-depends/usr/share/cozy-depends/template
+	cp -f $(CURDIR)/nginx-config $(CURDIR)/debian/cozy-depends/usr/share/cozy-depends/template/nginx-config
+	cp -f $(CURDIR)/apache-config $(CURDIR)/debian/cozy-depends/usr/share/cozy-depends/template/apache-config
+	cp -f $(CURDIR)/supervisor-cozy-controller $(CURDIR)/debian/cozy-depends/usr/share/cozy-depends/template/supervisor-cozy-controller
 	# cozy-app-self-hosting part
 	mkdir -p $(CURDIR)/debian/cozy-app-self-hosting/usr/share/cozy
 	mkdir -p $(CURDIR)/debian/cozy-app-self-hosting/etc/sudoers.d

@@ -8,4 +8,5 @@ debian/cozy-depends/
 debian/cozy-nginx/
 debian/cozy-standalone/
 debian/cozy-app-self-hosting/
+debian/cozy-apt-list/
 debian/cozy-apt-key/
