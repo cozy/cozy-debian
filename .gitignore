@@ -2,11 +2,11 @@ debian/*.debhelper.log
 debian/*.postrm.debhelper
 debian/*.substvars
 debian/files
-debian/cozy/
 debian/cozy-apache2/
+debian/cozy-app-self-hosting/
+debian/cozy-apt-key/
+debian/cozy-apt-list/
 debian/cozy-depends/
 debian/cozy-nginx/
 debian/cozy-standalone/
-debian/cozy-app-self-hosting/
-debian/cozy-apt-list/
-debian/cozy-apt-key/
+debian/cozy/

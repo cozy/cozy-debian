@@ -70,3 +70,11 @@ Description: Cozy is an app-based personal cloud you host at home
  ${Description}
  .
  This package helps you keep the GPG key update.
+
+Package: cozy-apt-list
+Architecture: all
+Depends: ${misc:Depends}, lsb-release
+Description: Cozy is an app-based personal cloud you host at home
+ ${Description}
+ .
+ This package helps you keep the apt source list update.
