@@ -1,0 +1,22 @@
+###-begin-cozy-monitor-completion-###
+#
+# cozy-monitor command completion script
+#
+# Installation: cozy-monitor completion >> ~/.bashrc  (or ~/.zshrc)
+# Or, maybe: cozy-monitor completion > /usr/local/etc/bash_completion.d/cozy-monitor
+#
+
+_cozy_monitor()
+{
+	local cur prev opts
+	COMPREPLY=()
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[COMP_CWORD-1]}"
+	opts="install install-cozy-stack uninstall start restart restart-cozy-stack stop stop-all update update-cozy-stack update-all update-all-cozy-stack change-branch init-db reinstall-missing-app start-standalone stop-standalone versions-stack versions dev-route:start dev-route:stop routes module-status status log curlcouch compact compact-views compact-all-views views-list cleanup backup reverse-backup reset-proxy -h --help -V --version"
+
+	COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+	return 0
+}
+
+complete -F _cozy_monitor cozy-monitor
+###-end-cozy-monitor-completion-###

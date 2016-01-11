@@ -33,9 +33,11 @@ override_dh_auto_install:
 	dh_auto_install
 	# cozy-depends part
 	mkdir -p $(CURDIR)/debian/cozy-depends/usr/share/cozy-depends/template
+	mkdir -p $(CURDIR)/debian/cozy-depends/etc/bash_completion.d
 	cp -f $(CURDIR)/nginx-config $(CURDIR)/debian/cozy-depends/usr/share/cozy-depends/template/nginx-config
 	cp -f $(CURDIR)/apache-config $(CURDIR)/debian/cozy-depends/usr/share/cozy-depends/template/apache-config
 	cp -f $(CURDIR)/supervisor-cozy-controller $(CURDIR)/debian/cozy-depends/usr/share/cozy-depends/template/supervisor-cozy-controller
+	cp -f $(CURDIR)/bash_completion_cozy-monitor $(CURDIR)/debian/cozy-depends/etc/bash_completion.d/cozy-monitor
 	# cozy-app-self-hosting part
 	mkdir -p $(CURDIR)/debian/cozy-app-self-hosting/usr/share/cozy
 	mkdir -p $(CURDIR)/debian/cozy-app-self-hosting/etc/sudoers.d
