@@ -32,6 +32,7 @@ Description: Cozy is an app-based personal cloud you host at home
 Package: cozy-standalone
 Architecture: all
 Pre-Depends: cozy-depends
+Recommends: cozy-nginx | cozy-apache2
 Depends: ${misc:Depends}
 Description: Cozy is an app-based personal cloud you host at home
  ${Description}
@@ -40,7 +41,7 @@ Description: Cozy is an app-based personal cloud you host at home
 
 Package: cozy-nginx
 Architecture: all
-Depends: ${misc:Depends}, cozy-standalone, nginx
+Depends: ${misc:Depends}, cozy-standalone, nginx | nginx-extras | nginx-full | nginx-light | nginx-naxsi | nginx-extras-dbg | nginx-full-dbg | nginx-light-dbg | nginx-naxsi-dbg
 Description: Cozy is an app-based personal cloud you host at home
  ${Description}
  .

@@ -137,55 +137,6 @@ case "$1" in
                 openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/cozy/server.key -out /etc/cozy/server.crt -days 3650 -subj "/CN=$COZY_DOMAIN"
                 chmod 400 /etc/cozy/server.key
         fi
-
-        if [ -d /etc/nginx ]; then
-		echo 'Configuring Nginx...'
-		if [ -f /etc/nginx/sites-enabled/default ]; then
-			rm /etc/nginx/sites-enabled/default
-		fi
-		TMPFILE=`mktemp`
-		CONFIGFILE=/etc/nginx/conf.d/cozy.conf
-		if [ -f $CONFIGFILE ]; then
-			BEFORE=`sha1sum $CONFIGFILE`
-		else
-			BEFORE=
-		fi
-		sed "s/%COZY_DOMAIN%/$COZY_DOMAIN/" /usr/share/cozy-depends/template/nginx-config > $TMPFILE
-		ucf --debconf-ok $TMPFILE $CONFIGFILE
-		rm $TMPFILE
-		AFTER=`sha1sum $CONFIGFILE`
-		if [ "$BEFORE" != "$AFTER" ]; then
-			service nginx status >/dev/null 2>&1 && service nginx reload
-		fi
-		nginx -t && echo "Cozy installation done!"
-	elif [ -f /etc/apache2/apache2.conf ]; then
-		echo 'Configuring Apache2...'
-		a2enmod ssl
-		a2enmod proxy_http
-		a2enmod proxy_wstunnel
-		a2enmod rewrite
-		TMPFILE=`mktemp`
-		CONFIGFILE=/etc/apache2/sites-available/cozy.conf
-		if [ -f $CONFIGFILE ]; then
-			BEFORE=`sha1sum $CONFIGFILE`
-		else
-			BEFORE=
-		fi
-		sed "s/%COZY_DOMAIN%/$COZY_DOMAIN/" /usr/share/cozy-depends/template/apache-config > $TMPFILE
-		ucf --debconf-ok $TMPFILE $CONFIGFILE
-		rm $TMPFILE
-		if [ ! -f /etc/apache2/sites-enabled/cozy.conf ]; then
-			BEFORE=
-			ln -s /etc/apache2/sites-available/cozy.conf /etc/apache2/sites-enabled/cozy.conf
-		fi
-		AFTER=`sha1sum $CONFIGFILE`
-		if [ "$BEFORE" != "$AFTER" ]; then
-			apachectl configtest && apachectl restart
-		fi
-		apachectl configtest && echo "Cozy installation done!"
-	else
-		echo "May be you missed to install an http server"
-        fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

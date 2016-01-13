@@ -61,22 +61,6 @@ case "$1" in
 			fi
 		done
 		[[ $SUPERVISORD_RELOAD ]] && echo "Reload supervisord" && supervisorctl reload
-		if [ -f /etc/nginx/conf.d/cozy.conf ]; then
-			echo "Remove etc/nginx/conf.d/cozy.conf and restart Nginx"
-			rm /etc/nginx/conf.d/cozy.conf
-			ucf --purge /etc/nginx/conf.d/cozy.conf
-			service nginx reload
-		fi
-		if [ -f /etc/apache2/sites-enabled/cozy.conf ]; then
-			echo "Remove /etc/apache2/sites-enabled/cozy.conf and restart Apache"
-			rm /etc/apache2/sites-enabled/cozy.conf
-			apachectl configtest && apachectl restart
-		fi
-		if [ -f /etc/apache2/sites-available/cozy.conf ]; then
-			echo "Remove /etc/apache2/sites-available/cozy.conf"
-			rm /etc/apache2/sites-available/cozy.conf
-			ucf --purge /etc/apache2/sites-available/cozy.conf
-		fi
 		;;
 
 	upgrade|failed-upgrade|abort-upgrade|disappear)
