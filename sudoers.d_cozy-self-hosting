@@ -1,1 +1,1 @@
-cozy-self-hosting ALL=NOPASSWD: /usr/share/cozy/debian-reconfigure-cozy-domain.sh
+cozy-self-hosting ALL=NOPASSWD: /usr/share/cozy-app-self-hosting/debian-reconfigure-cozy-domain.sh

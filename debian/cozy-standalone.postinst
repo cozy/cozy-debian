@@ -133,9 +133,9 @@ case "$1" in
                 openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 2048
                 chmod 400 /etc/cozy/dh.pem
         fi
-        if [ ! -f /etc/cozy/server.key ]; then
-                openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/cozy/server.key -out /etc/cozy/server.crt -days 3650 -subj "/CN=$COZY_DOMAIN"
-                chmod 400 /etc/cozy/server.key
+        if [ ! -f /etc/cozy/server.crt ]; then
+		cozy_management normalize_cert_dir
+		cozy_management generate_certificate ${COZY_DOMAIN}
         fi
     ;;
 

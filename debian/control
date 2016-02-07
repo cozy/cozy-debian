@@ -15,15 +15,16 @@ Description: Cozy is an app-based personal cloud you host at home
 
 Package: cozy-depends
 Architecture: all
-Recommends: nginx | apache2, postfix | exim4 | sendmail | mail-transport-agent
+Recommends: cozy-apt-node-list, nginx | apache2, postfix | exim4 | sendmail | mail-transport-agent
 Depends: ${misc:Depends},
 	ucf, bash, build-essential, curl, git, git-core, imagemagick,
 	libssl-dev, libxml2-dev, libxslt1-dev, python-dev, python-pip,
 	python-setuptools, python-virtualenv, python-software-properties,
 	software-properties-common, sqlite3, sudo, pwgen,
-	npm, coffeescript, ca-certificates, couchdb,
+	coffeescript, ca-certificates, couchdb,
 	supervisor, python-cozy-management, apt-transport-https,
-	nodejs (>= 0.10.20), nodejs-legacy (>= 0.10.20)
+	nodejs (>= 0.10.20)
+Conflicts: node-gyp
 Description: Cozy is an app-based personal cloud you host at home
  ${Description}
  .
@@ -57,7 +58,7 @@ Description: Cozy is an app-based personal cloud you host at home
 
 Package: cozy-app-self-hosting
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends}, nodejs (>= 4.0.0)
 Pre-Depends: cozy-standalone
 Description: Cozy is an app-based personal cloud you host at home
  ${Description}
@@ -79,3 +80,11 @@ Description: Cozy is an app-based personal cloud you host at home
  ${Description}
  .
  This package helps you keep the apt source list update.
+
+Package: cozy-apt-node-list
+Architecture: all
+Depends: ${misc:Depends}, lsb-release, apt-transport-https
+Description: Cozy is an app-based personal cloud you host at home
+ ${Description}
+ .
+ This package helps you keep nodejs up to date.

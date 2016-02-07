@@ -1,0 +1,8 @@
+
+Template: cozy/nodejs_apt_list
+Type: text
+Default: true
+Description: Need to do an "apt-get update"
+ The nodejs apt source list is updated. You need to do an "apt-get update" to
+ refresh apt lists.
+

@@ -1,0 +1,3 @@
+{
+    "reconfigure_script": "/usr/share/cozy-app-self-hosting/debian-reconfigure-cozy-domain.sh"
+}

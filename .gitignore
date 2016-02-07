@@ -6,6 +6,7 @@ debian/cozy-apache2/
 debian/cozy-app-self-hosting/
 debian/cozy-apt-key/
 debian/cozy-apt-list/
+debian/cozy-apt-node-list/
 debian/cozy-depends/
 debian/cozy-nginx/
 debian/cozy-standalone/

@@ -5,10 +5,6 @@ echo $DOMAIN
 echo 'cozy cozy/certificate text ' | debconf-set-selections
 echo "cozy cozy/fqdn string $DOMAIN" | debconf-set-selections
 
-for file in /etc/cozy/server.*; do
-	mv ${file} ${file}.backup
-done
-
-/var/lib/dpkg/info/cozy.postinst reconfigure
+cozy_management generate_certificate ${DOMAIN}
 
 service nginx restart
