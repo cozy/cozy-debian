@@ -24,7 +24,6 @@ Depends: ${misc:Depends},
 	coffeescript, ca-certificates, couchdb,
 	supervisor, python-cozy-management, apt-transport-https,
 	nodejs (>= 0.10.20)
-Conflicts: node-gyp
 Description: Cozy is an app-based personal cloud you host at home
  ${Description}
  .
