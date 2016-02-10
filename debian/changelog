@@ -2,6 +2,8 @@ cozy (1.18) unstable; urgency=medium
 
   * Add node4 support
   * Split cozy in multiple packages
+  * Add Kresus dependency
+  * Fix node versions
   * Move compare-version.py & cozy-get-instance-param.py in new package
     python-cozy-management
 

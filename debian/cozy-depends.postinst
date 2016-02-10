@@ -23,12 +23,12 @@ case "$1" in
 	NODEJS=`which node`
 	if [ -x $NODEJS ]; then
 		NODE_VERSION=`$NODEJS -v`
-		cozy_management compare_version "$NODE_VERSION" '>=' '0.10.20' && RESULT=$? || RESULT=$?
+		cozy_management compare_version "$NODE_VERSION" '>=' '0.10.25' && RESULT=$? || RESULT=$?
 		if [ "$RESULT" = "1" ]; then
 			db_input high cozy/nodejs_minimum || true
 			db_go
 		fi
-		cozy_management compare_version "$NODE_VERSION" '<' '0.12.00' && RESULT=$? || RESULT=$?
+		cozy_management compare_version "$NODE_VERSION" '<' '5.0.0' && RESULT=$? || RESULT=$?
 		if [ "$RESULT" = "1" ]; then
 			db_input high cozy/nodejs_maximum || true
 			db_go

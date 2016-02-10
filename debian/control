@@ -23,7 +23,7 @@ Depends: ${misc:Depends},
 	software-properties-common, sqlite3, sudo, pwgen,
 	coffeescript, ca-certificates, couchdb,
 	supervisor, python-cozy-management, apt-transport-https,
-	nodejs (>= 0.10.20)
+	nodejs (>= 0.10.20), python-weboob | python-weboob-core
 Description: Cozy is an app-based personal cloud you host at home
  ${Description}
  .
