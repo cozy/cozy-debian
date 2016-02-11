@@ -1,1 +1,1 @@
-deb [arch=%ARCH%] http://debian-builder-trusty.int.cozycloud.cc/debian %DISTRIB% cozy
+deb [arch=%ARCH%] http://%DISTRIBUTOR%.cozycloud.cc/debian %CODE_NAME% cozy

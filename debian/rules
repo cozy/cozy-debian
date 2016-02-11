@@ -59,3 +59,13 @@ override_dh_auto_install:
 	cp -f $(CURDIR)/nodesource.list $(CURDIR)/debian/cozy-apt-node-list/usr/share/cozy-apt-node-list/template
 	cp -f $(CURDIR)/node-source.gpg.key $(CURDIR)/debian/cozy-apt-node-list/usr/share/cozy-apt-node-list
 	cp -f $(CURDIR)/npmrc $(CURDIR)/debian/cozy-apt-node-list/usr/etc
+	#
+	# cozy-apt-list part
+	#
+	mkdir -p $(CURDIR)/debian/cozy-apt-list/usr/share/doc/cozy-apt-list
+	cp -f $(CURDIR)/apt-list.template $(CURDIR)/debian/cozy-apt-list/usr/share/doc/cozy-apt-list/
+	#
+	# cozy-apt-key part
+	#
+	mkdir -p $(CURDIR)/debian/cozy-apt-key/usr/share/cozy-apt-key
+	cp -f $(CURDIR)/cozy.gpg.key $(CURDIR)/debian/cozy-apt-key/usr/share/cozy-apt-key/

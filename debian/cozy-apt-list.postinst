@@ -20,13 +20,27 @@
 
 case "$1" in
     configure|reconfigure)
-	TMPFILE=`mktemp`
-	CONFIGFILE=/etc/apt/sources.list.d/cozy.list
-	ARCH=$(dpkg --print-architecture)
-	DISTRIB=$(lsb_release -c | awk '{ print $2 }')
-	sed "s/%ARCH%/$ARCH/;s/%DISTRIB%/$DISTRIB/" /usr/share/doc/cozy-apt-list/apt-list.template > $TMPFILE
-	ucf --debconf-ok $TMPFILE $CONFIGFILE
-	rm $TMPFILE
+	DISTRIBUTOR=$(lsb_release -si)
+	if [ "$DISTRIBUTOR" = "Debian" ]; then
+		DISTRIBUTOR="debian"
+	elif [ "$DISTRIBUTOR" = "Ubuntu" ]; then
+		DISTRIBUTOR="ubuntu"
+	else
+		DISTRIBUTOR=""
+	fi
+
+	if [ "$DISTRIBUTOR" = "" ]; then
+		echo "Unsupported distribution:"
+		lsb_release -a
+	else
+		TMPFILE=`mktemp`
+		CONFIGFILE=/etc/apt/sources.list.d/cozy.list
+		ARCH=$(dpkg --print-architecture)
+		CODE_NAME=$(lsb_release -sc)
+		sed "s/%ARCH%/$ARCH/;s/%DISTRIBUTOR%/$DISTRIBUTOR/;s/%CODE_NAME%/$CODE_NAME/" /usr/share/doc/cozy-apt-list/apt-list.template > $TMPFILE
+		ucf --debconf-ok $TMPFILE $CONFIGFILE
+		rm $TMPFILE
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
