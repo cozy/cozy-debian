@@ -1,3 +1,9 @@
+cozy (1.19) unstable; urgency=medium
+
+  * Fix debian-reconfigure-cozy-domain.sh
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Tue, 01 Mar 2016 16:17:40 +0000
+
 cozy (1.18) unstable; urgency=medium
 
   * Add node4 support
