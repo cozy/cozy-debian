@@ -1,3 +1,9 @@
+cozy (1.20) unstable; urgency=medium
+
+  * Fixed uninstall in case of errors
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Mon, 14 Mar 2016 11:10:15 +0000
+
 cozy (1.19) unstable; urgency=medium
 
   * Fix debian-reconfigure-cozy-domain.sh
