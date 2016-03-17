@@ -72,7 +72,7 @@ case "$1" in
         while ! curl -s 127.0.0.1:9002 >/dev/null; do
 		let "COUNT += 1"
 		echo "Waiting for Cozy Controller to start... ($COUNT/$MAX)"
-		if [[ $COUNT -gt $MAX ]]; then
+		if [[ $COUNT -ge $MAX ]]; then
 			echo "Cozy Controller is too long to start"
 			exit 1
 		fi
