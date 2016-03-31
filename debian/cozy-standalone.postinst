@@ -57,6 +57,9 @@ case "$1" in
         chmod 640 /etc/cozy/couchdb.login
 
 	echo 'Configuring Cozy Controller...'
+    if service --status-all | grep -Fq 'supervisor'; then    
+          sudo service supervisor start
+    fi
 	CONFIGFILE=/etc/supervisor/conf.d/cozy-controller.conf
 	if [ -f $CONFIGFILE ]; then
 		BEFORE=`sha1sum $CONFIGFILE`
