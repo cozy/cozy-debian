@@ -24,3 +24,13 @@ Description: Self-signed certificate
  https://davdroid.bitfire.at/faq/entry/importing-a-certificate for instruction
  on how to do it.
 
+Template: cozy/certificate_type
+Type: select
+Choices: none, selfsigned, letsencrypt
+Default: selfsigned
+Description: How sign server certificate?
+ How to sign the certificate:
+  * selfsigned Self signed certificate
+  * letsencrypt send CSR to let's encrypt for signing
+  * none do not generate certificate
+

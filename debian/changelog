@@ -1,3 +1,21 @@
+cozy (1.23) unstable; urgency=medium
+
+  * Add new cozy-self-hosting scripts
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Thu, 12 May 2016 16:53:22 +0000
+
+cozy (1.22) unstable; urgency=medium
+
+  * Add Let's Encrypt certificates support
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Fri, 01 Apr 2016 12:54:14 +0000
+
+cozy (1.21) unstable; urgency=medium
+
+  * Check supervisord service
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Thu, 31 Mar 2016 22:01:28 +0000
+
 cozy (1.20) unstable; urgency=medium
 
   * Fixed uninstall in case of errors

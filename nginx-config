@@ -35,5 +35,14 @@ server {
 server {
     listen 80;
     server_name %COZY_DOMAIN%;
-    return 301 https://$host$request_uri;
+
+    location /.well-known/acme-challenge/ {
+	    allow all;
+	    alias /var/www/cozy-letsencrypt/;
+	    try_files $uri =404;
+    }
+
+    if ($request_uri !~ "\.well-known" ) {
+	    return 301 https://$host$request_uri;
+    }
 }

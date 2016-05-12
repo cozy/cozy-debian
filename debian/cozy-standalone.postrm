@@ -43,6 +43,7 @@ case "$1" in
 		[ -d /etc/cozy ] && echo "Delete /etc/cozy directory" && rm -rf /etc/cozy
 		[ -d /usr/local/var/log/cozy ] && echo "Delete /usr/local/var/log/cozy directory" && rm -rf /usr/local/var/log/cozy
 		[ -d /usr/local/cozy ] && echo "Delete /usr/local/cozy directory" && rm -rf /usr/local/cozy
+		[ -d /var/www/cozy-letsencrypt ] && echo "Delete /var/www/cozy-letsencrypt directory" && rm -rf /var/www/cozy-letsencrypt
 		;;
 
 	remove)

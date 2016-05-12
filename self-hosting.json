@@ -1,3 +1,6 @@
 {
-    "reconfigure_script": "/usr/share/cozy-app-self-hosting/debian-reconfigure-cozy-domain.sh"
+    "reconfigure_script": "/usr/share/cozy-app-self-hosting/debian-reconfigure-cozy-domain.sh",
+    "halt_script": "/usr/share/cozy-app-self-hosting/debian-halt.sh",
+    "reboot_script": "/usr/share/cozy-app-self-hosting/debian-reboot.sh",
+    "database_script": "/usr/share/cozy-app-self-hosting/debian-database-maintenance.sh"
 }

@@ -46,7 +46,7 @@ override_dh_auto_install:
 	mkdir -p $(CURDIR)/debian/cozy-app-self-hosting/usr/share/cozy-app-self-hosting
 	mkdir -p $(CURDIR)/debian/cozy-app-self-hosting/etc/sudoers.d
 	mkdir -p $(CURDIR)/debian/cozy-app-self-hosting/etc/cozy
-	cp -f $(CURDIR)/debian-reconfigure-cozy-domain.sh $(CURDIR)/debian/cozy-app-self-hosting/usr/share/cozy-app-self-hosting
+	for script in debian-reconfigure-cozy-domain.sh debian-halt.sh debian-reboot.sh debian-database-maintenance.sh; do cp -f $(CURDIR)/$${script} $(CURDIR)/debian/cozy-app-self-hosting/usr/share/cozy-app-self-hosting/; done
 	cp -f $(CURDIR)/sudoers.d_cozy-self-hosting $(CURDIR)/debian/cozy-app-self-hosting/etc/sudoers.d/cozy-app-self-hosting
 	cp -f $(CURDIR)/self-hosting.json $(CURDIR)/debian/cozy-app-self-hosting/etc/cozy
 	chown root:root $(CURDIR)/debian/cozy-app-self-hosting/etc/sudoers.d/cozy-app-self-hosting
