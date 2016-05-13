@@ -138,7 +138,7 @@ case "$1" in
 		mkdir -p /var/www/cozy-letsencrypt
 	fi
 
-	if [ "$CERTIFICATE_TYPE" != "node" ]; then
+	if [ "$CERTIFICATE_TYPE" != "none" ]; then
 		echo 'Generating SSL keys and certificates...'
 		if [ ! -f /etc/cozy/dh.pem ]; then
 			openssl dhparam -out /etc/cozy/dh.pem -outform PEM -2 2048
@@ -147,23 +147,6 @@ case "$1" in
 		if [ ! -f /etc/cozy/server.crt ]; then
 			cozy_management normalize_cert_dir
 			cozy_management generate_certificate ${COZY_DOMAIN}
-		fi
-		if [ "$CERTIFICATE_TYPE" = "letsencrypt" ]; then
-			echo "Sign with let's encrypt"
-			if [ ! -d /etc/cozy/acme ]; then
-				mkdir -p /etc/cozy/acme
-			fi
-
-			if [ ! -f /etc/cozy/acme/account.key ]; then
-				openssl genrsa 4096 > /etc/cozy/acme/account.key
-			fi
-			if [ ! -f /etc/cozy/certs/cozy-deb-8.cozycloud.cc.csr ]; then
-				openssl req -new -sha256 -key /etc/cozy/certs/cozy-deb-8.cozycloud.cc.key -subj "/CN=cozy-deb-8.cozycloud.cc" > /etc/cozy/certs/cozy-deb-8.cozycloud.cc.csr
-			fi
-			acme_tiny.py --account-key /etc/cozy/acme/account.key --csr /etc/cozy/certs/cozy-deb-8.cozycloud.cc.csr --acme-dir /var/www/cozy-letsencrypt > /etc/cozy/certs/cozy-deb-8.cozycloud.cc-signed.crt && \
-				wget -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > /etc/cozy/acme/lets-encrypt-cross-signed.pem && \
-			       	cat /etc/cozy/certs/cozy-deb-8.cozycloud.cc-signed.crt /etc/cozy/acme/lets-encrypt-cross-signed.pem > /etc/cozy/certs/cozy-deb-8.cozycloud.cc.crt && \
-				service nginx reload
 		fi
 	fi
     ;;

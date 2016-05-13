@@ -24,6 +24,10 @@ case "$1" in
 	db_get cozy/fqdn || true
 	COZY_DOMAIN=$RET
 
+	CERTIFICATE_TYPE=
+	db_get cozy/certificate_type || true
+	CERTIFICATE_TYPE=$RET
+
 	echo "Chosen domain name for Cozy: $COZY_DOMAIN"
 
 	echo 'Configuring Nginx...'
@@ -45,6 +49,11 @@ case "$1" in
 		service nginx status >/dev/null 2>&1 && service nginx reload
 	fi
 	nginx -t && echo "Cozy installation done!"
+	if [ "$CERTIFICATE_TYPE" = "letsencrypt" ]; then
+		echo "Sign with let's encrypt"
+		cozy_management sign_certificate ${COZY_DOMAIN} && \
+			service nginx reload
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
