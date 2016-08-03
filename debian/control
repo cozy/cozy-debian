@@ -16,6 +16,7 @@ Description: Cozy is an app-based personal cloud you host at home
 Package: cozy-depends
 Architecture: all
 Recommends: cozy-apt-node-list, nginx | apache2, postfix | exim4 | sendmail | mail-transport-agent
+Conflicts: python-pyasn1
 Depends: ${misc:Depends},
 	ucf, bash, build-essential, curl, git, git-core, imagemagick,
 	libssl-dev, libxml2-dev, libxslt1-dev, python-dev, python-pip,
@@ -23,7 +24,8 @@ Depends: ${misc:Depends},
 	software-properties-common, sqlite3, sudo, pwgen,
 	coffeescript, ca-certificates, couchdb,
 	supervisor, python-cozy-management, apt-transport-https,
-	nodejs (>= 0.10.20), weboob
+	nodejs (>= 0.10.20), libjpeg-dev, zlib1g-dev, libopenjpeg-dev,
+	libtiff5-dev, libfreetype6-dev, liblcms2-dev, libwebp-dev
 Description: Cozy is an app-based personal cloud you host at home
  ${Description}
  .
