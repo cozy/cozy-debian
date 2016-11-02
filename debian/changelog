@@ -1,3 +1,9 @@
+cozy (1.26) unstable; urgency=medium
+
+  * Harden TLS
+
+ -- Cozy Debian Packaging <debian-packaging@cozycloud.cc>  Mon, 24 Oct 2016 17:55:00 +0000
+
 cozy (1.25) unstable; urgency=medium
 
   * Remove weboob

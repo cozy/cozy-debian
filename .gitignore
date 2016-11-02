@@ -1,6 +1,7 @@
 debian/*.debhelper.log
 debian/*.postrm.debhelper
 debian/*.substvars
+debian/debhelper-build-stamp
 debian/files
 debian/cozy-apache2/
 debian/cozy-app-self-hosting/
