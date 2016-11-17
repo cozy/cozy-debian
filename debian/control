@@ -51,7 +51,7 @@ Description: Cozy is an app-based personal cloud you host at home
 
 Package: cozy-apache2
 Architecture: all
-Depends: ${misc:Depends}, cozy-standalone, apache2
+Depends: ${misc:Depends}, cozy-standalone, apache2, ucf
 Description: Cozy is an app-based personal cloud you host at home
  ${Description}
  .
@@ -76,7 +76,7 @@ Description: Cozy is an app-based personal cloud you host at home
 
 Package: cozy-apt-list
 Architecture: all
-Depends: ${misc:Depends}, lsb-release
+Depends: ${misc:Depends}, lsb-release, ucf
 Description: Cozy is an app-based personal cloud you host at home
  ${Description}
  .
@@ -84,7 +84,7 @@ Description: Cozy is an app-based personal cloud you host at home
 
 Package: cozy-apt-node-list
 Architecture: all
-Depends: ${misc:Depends}, lsb-release, apt-transport-https
+Depends: ${misc:Depends}, lsb-release, apt-transport-https, ucf
 Description: Cozy is an app-based personal cloud you host at home
  ${Description}
  .
