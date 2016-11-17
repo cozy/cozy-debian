@@ -36,17 +36,6 @@ case "$1" in
 		db_input high cozy/nodejs_apt_list || true
 		db_go
 	fi
-	NODEJS_KEY_ID=$(apt-key list | grep -B1 gpg@nodesource.com | head -1 | awk '{ print $2 }' | sed 's%.*/%%')
-
-	if [[ "$NODEJS_KEY_ID" == "68576280" ]]; then
-		echo "The key is already the right one"
-	elif [[ "$NODEJS_KEY_ID" == "" ]]; then
-		apt-key add /usr/share/cozy-apt-node-list/node-source.gpg.key
-	else
-		echo "Delete: $NODEJS_KEY_ID"
-		apt-key del $NODEJS_KEY_ID
-		apt-key add /usr/share/cozy-apt-node-list/node-source.gpg.key
-	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

@@ -54,10 +54,10 @@ override_dh_auto_install:
 	#
 	# cozy-apt-node-list part
 	#
-	mkdir -p $(CURDIR)/debian/cozy-apt-node-list/usr/etc
+	mkdir -p $(CURDIR)/debian/cozy-apt-node-list/etc/apt/trusted.gpg.d
 	mkdir -p $(CURDIR)/debian/cozy-apt-node-list/usr/share/cozy-apt-node-list/template
 	cp -f $(CURDIR)/nodesource.list $(CURDIR)/debian/cozy-apt-node-list/usr/share/cozy-apt-node-list/template
-	cp -f $(CURDIR)/node-source.gpg.key $(CURDIR)/debian/cozy-apt-node-list/usr/share/cozy-apt-node-list
+	cp -f $(CURDIR)/nodesource.gpg $(CURDIR)/debian/cozy-apt-node-list/etc/apt/trusted.gpg.d/nodesource.gpg
 	cp -f $(CURDIR)/npmrc $(CURDIR)/debian/cozy-apt-node-list/usr/etc
 	#
 	# cozy-apt-list part
@@ -67,5 +67,5 @@ override_dh_auto_install:
 	#
 	# cozy-apt-key part
 	#
-	mkdir -p $(CURDIR)/debian/cozy-apt-key/usr/share/cozy-apt-key
-	cp -f $(CURDIR)/cozy.gpg.key $(CURDIR)/debian/cozy-apt-key/usr/share/cozy-apt-key/
+	mkdir -p $(CURDIR)/debian/cozy-apt-key/etc/apt/trusted.gpg.d
+	cp -f $(CURDIR)/cozy.gpg $(CURDIR)/debian/cozy-apt-key/etc/apt/trusted.gpg.d/cozy.gpg
