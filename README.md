@@ -1,9 +1,14 @@
 ## Cozy Debian
 
-It is the repository of the Debian files require to build the Debian package of Cozy. 
+### Deprecation warning
+:warning: This files allow to build the Debian packages for the old, now deprecated, Node.js based, Cozy V2.
+Form the band new, Go based, Cozy V3, please use [https://github.com/cozy/debian-cozy]()
+
+### Introduction
+It is the repository of the Debian files requires to build the Debian package of Cozy. 
 This package is available on Debian repository of Cozy: debian.cozycloud.cc
 
-## Usage
+### Usage
 
 You need **Debian 8 Jessie (stable)** in order to proceed to theses steps.
 
@@ -20,7 +25,7 @@ root@debian-8:~# cat /etc/debian_version
 8.1
 ```
 
-### Install Instructions
+#### Install Instructions
 
 Make sure that `ca-certificates` and `apt-transport-https` are properly installed
 
