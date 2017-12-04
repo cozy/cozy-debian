@@ -3,7 +3,7 @@
 ### Deprecation warning
 :warning: This files allow to build the Debian packages for the old, now deprecated, Node.js based, Cozy V2.
 
-For the brand new, Go based, Cozy V3, please use [https://github.com/cozy/debian-cozy]()
+For the brand new, Go based, Cozy V3, please use [https://github.com/cozy/debian-cozy](https://github.com/cozy/debian-cozy)
 
 ### Introduction
 It is the repository of the Debian files requires to build the Debian package of Cozy. 
